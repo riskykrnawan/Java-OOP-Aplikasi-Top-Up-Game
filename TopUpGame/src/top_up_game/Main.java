@@ -1,4 +1,4 @@
-package toko_game;
+package top_up_game;
 
 
 import java.util.Scanner;
@@ -7,6 +7,7 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.UUID;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,11 +19,10 @@ import java.sql.ResultSet;
  * @author Lenovo-PC
  */
 public class Main {
-    // db connect
     static final String URL = "jdbc:mysql://localhost:3306/toko_game";
     static final String USERNAME = "root";
     static final String PASSWORD = "";
-
+    
     static void templateAdmin(String str) {
         System.out.println("1. LIHAT DATA " + str);
         System.out.println("2. TAMBAH DATA " + str);
@@ -35,18 +35,45 @@ public class Main {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
+            // untuk connect ke dbmysql
             Connection connection = DriverManager.getConnection(
                     URL, USERNAME, PASSWORD);
             
             Statement statement = connection.createStatement();
+            
+            // mengeksekusi query
             resultSet = statement.executeQuery(query);
             
+            // mengembalikan hasil query
             return resultSet;
             
         } catch(Exception e) {
             System.out.println(e);
         }
         return resultSet;
+    }
+    
+    static int update(String query) {        
+        int result = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            // untuk connect ke dbmysql
+            Connection connection = DriverManager.getConnection(
+                    URL, USERNAME, PASSWORD);
+            
+            Statement statement = connection.createStatement();
+            
+            // mengeksekusi query
+            result = statement.executeUpdate(query);
+            
+            // mengembalikan hasil query
+            return result;
+            
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return result;
     }
 
     static String login(
@@ -75,6 +102,7 @@ public class Main {
         }
         return "LOGIN GAGAL, KREDENSIAL YANG DIBERIKAN TIDAK BENAR";
     }
+    
     static String register(
         String username,
         String password,
@@ -82,7 +110,28 @@ public class Main {
         String alamat,
         String noTelp
     ) {
-        return "PESAN REGISTER SUKSES";
+       try {
+            final UUID uuid = UUID.randomUUID();
+            final String id = "user-" + uuid.toString();
+            String query = "INSERT INTO users "
+                            + "(id, username, password, nama, alamat, noTelp, otorisasi) "
+                            + "VALUES ("
+                            + "'" + id + "', "
+                            + "'" + username + "', "
+                            + "'" + password + "', "
+                            + "'" + nama + "', "
+                            + "'" + alamat + "', "
+                            + "'" + noTelp + "', "
+                            + "'user'"
+                            + ")";
+            int result = update(query);
+            if(result != 0) {
+                return "BERHASIL MENDAFTARKAN AKUN";
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return "AKUN GAGAL DIDAFTARKAN, DATA YANG DIBERIKAN TIDAK BENAR";
     }
     
     public static void main(String[] args) {
@@ -124,7 +173,8 @@ public class Main {
                     System.out.print("No Telp: ");
                     noTelp = myObj.nextLine();
                     //setelah user nginputkan data register, jalankan fungsi register
-                    register(username, password, nama, alamat, noTelp);
+                    System.out.println(register(username, password, nama, alamat, noTelp));
+                    
                 }
             }
         }
