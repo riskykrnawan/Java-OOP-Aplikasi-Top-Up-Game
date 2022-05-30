@@ -8,15 +8,14 @@ package top_up_game;
  *
  * @author Lenovo-PC
  */
-public class Admin extends User {
+public class Customer extends User {
 
     // constructor
-    public Admin(
+    public Customer (
             String nama,
             String alamat,
             String noTelp
     ) {
         super(nama, alamat, noTelp);
     }
-
 }
