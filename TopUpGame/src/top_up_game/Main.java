@@ -22,6 +22,9 @@ public class Main {
     static final String URL = "jdbc:mysql://localhost:3306/toko_game";
     static final String USERNAME = "root";
     static final String PASSWORD = "";
+
+    static Customer user1;
+    static Admin user2;
     
     static void templateAdmin(String str) {
         System.out.println("1. LIHAT DATA " + str);
@@ -91,10 +94,10 @@ public class Main {
             while (resultSet.next()) {
                 String result = resultSet.getString(1);
                 if (result.equals("user")) {
-                    return "SUKSES LOGIN SEBAGAI USER";   
+                    return user1.statusLogin();
                 }
                 if (result.equals("admin")) {
-                    return "SUKSES LOGIN SEBAGAI USER";   
+                    return user2.statusLogin();
                 }
             }
         } catch(Exception e) {
@@ -146,6 +149,7 @@ public class Main {
             System.out.println("===== TOKO GAME ETAM =====");
             System.out.println("1. Login");
             System.out.println("2. Register");
+            System.out.println("3. Keluar");
             System.out.println("==========================");
             System.out.print("Masukkan Pilihan: ");
             pil = myObj.nextLine();
@@ -174,7 +178,11 @@ public class Main {
                     noTelp = myObj.nextLine();
                     //setelah user nginputkan data register, jalankan fungsi register
                     System.out.println(register(username, password, nama, alamat, noTelp));
-                    
+                }
+                case "3" -> {
+                    System.out.println("===========KELUAR===========");
+                    System.out.println("Terima Kasih Telah Menggunakan Aplikasi");
+                    repeat = false;
                 }
             }
         }
