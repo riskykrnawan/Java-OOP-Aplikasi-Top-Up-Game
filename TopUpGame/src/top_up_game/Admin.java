@@ -4,11 +4,15 @@
  */
 package top_up_game;
 
+import java.util.UUID;
+
 /**
  *
  * @author Lenovo-PC
  */
 public class Admin extends User {
+    private final UUID uuid = UUID.randomUUID();
+    private final String id = "admin-" + uuid.toString();
 
     // constructor
     public Admin(
@@ -19,4 +23,12 @@ public class Admin extends User {
         super(nama, alamat, noTelp);
     }
 
+    public String getId(){
+        return id;
+    }
+
+    @Override
+    public String statusLogin() {
+        return "Berhasil login sebagai admin";
+    }
 }

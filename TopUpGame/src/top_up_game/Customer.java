@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package top_up_game;
-
 /**
  *
  * @author Lenovo-PC
@@ -17,5 +16,10 @@ public class Customer extends User {
             String noTelp
     ) {
         super(nama, alamat, noTelp);
+    }
+
+    @Override
+    public String statusLogin() {
+        return "Berhasil login sebagai customer";
     }
 }

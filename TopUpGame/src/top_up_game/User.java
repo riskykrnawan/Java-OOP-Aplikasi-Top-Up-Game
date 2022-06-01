@@ -1,11 +1,7 @@
 package top_up_game;
 
-import java.util.UUID;
-
-abstract class User {
+abstract class User implements UserInterface {
     private String nama, alamat, noTelp, otorisasi;
-    private final UUID uuid = UUID.randomUUID();
-    private final String id = "admin-" + uuid.toString();
 
     // constructor
     public User (
@@ -18,9 +14,6 @@ abstract class User {
         this.noTelp = noTelp;
     }
     
-    public String getId(){
-        return id;
-    }
     public String getNama(){
         return nama;
     }
