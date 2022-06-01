@@ -3,7 +3,7 @@ package top_up_game;
 
 import java.util.Scanner;
 import java.sql.Connection;
-import java.sql.Driver;
+// import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -142,7 +142,7 @@ public class Main {
         Scanner myObj = new Scanner(System.in);
         
         boolean repeat = true;
-        String pil, pil2, pil3, pil4;
+        String pil; // pil2, pil3, pil4;
         String username, password, nama, alamat, noTelp;
         
         while(repeat) {
@@ -182,6 +182,9 @@ public class Main {
                 case "3" -> {
                     System.out.println("===========KELUAR===========");
                     System.out.println("Terima Kasih Telah Menggunakan Aplikasi");
+                    // close scanner
+                    myObj.close();
+                    // end program
                     repeat = false;
                 }
             }
