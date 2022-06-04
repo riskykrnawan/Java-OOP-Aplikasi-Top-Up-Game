@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /*
@@ -24,15 +25,19 @@ public class Main {
     static final String USERNAME = "root";
     static final String PASSWORD = "";
 
-    static Customer user1;
-    static Admin user2;
-    
     static void templateAdmin(String str) {
-        System.out.println("1. LIHAT DATA " + str);
-        System.out.println("2. TAMBAH DATA " + str);
-        System.out.println("3. UBAH DATA " + str);
-        System.out.println("4. HAPUS DATA " + str);
+        System.out.println("1. Lihat Data " + str);
+        System.out.println("2. Tambah Data " + str);
+        System.out.println("3. Ubah Data " + str);
+        System.out.println("4. Hapus Data " + str);
     }
+    static void menuAdmin() {
+        System.out.println("=== SELAMAT DATANG ADMIN === ");
+        System.out.println("1. Pengelolaan Data Game");
+        System.out.println("2. Pengelolaan Data User");
+        System.out.println("3. Pengelolaan Data Riwayat Pembelian");
+    }
+    
     
     static ResultSet query(String query) {
         ResultSet resultSet = null;
@@ -80,12 +85,14 @@ public class Main {
         return result;
     }
 
-    static String login(
+    static Person login(
         String username,
         String password
     ) {
+        Person result = null;
         try {
-            String query = "SELECT otorisasi "
+            
+            String query = "SELECT * "
                             + "FROM users WHERE "
                             + "username='" + username 
                             + "' AND " 
@@ -93,18 +100,29 @@ public class Main {
                             + "'";
             ResultSet resultSet = query(query);
             while (resultSet.next()) {
-                String result = resultSet.getString(1);
-                if (result.equals("user")) {
-                    return user1.statusLogin();
-                }
-                if (result.equals("admin")) {
-                    return user2.statusLogin();
-                }
+                String resultId = resultSet.getString(1);
+                String resultUsername = resultSet.getString(2);
+                String resultPassword = resultSet.getString(3);
+                String resultNama = resultSet.getString(4);
+                String resultAlamat = resultSet.getString(5);
+                String resultNoTelp = resultSet.getString(6);
+                String resultOtorisasi = resultSet.getString(7);
+                result = new Person(
+                    resultId,
+                    resultUsername,
+                    resultPassword,
+                    resultOtorisasi,
+                    resultNama,
+                    resultAlamat,
+                    resultNoTelp
+                );
+                result.statusLogin(resultOtorisasi);
+                return result;
             }
         } catch(Exception e) {
             System.out.println(e);
         }
-        return "LOGIN GAGAL, KREDENSIAL YANG DIBERIKAN TIDAK BENAR";
+        return result;
     }
     
     static String register(
@@ -141,9 +159,9 @@ public class Main {
     public static void main(String[] args) {
         // declare variable
         Scanner myObj = new Scanner(System.in);
-        
+        ArrayList<Person> dataPerson = new ArrayList<>();
         boolean repeat = true;
-        String pil; // pil2, pil3, pil4;
+        String pil, pil2, pil3;
         String username, password, nama, alamat, noTelp;
         
         while(repeat) {
@@ -163,7 +181,97 @@ public class Main {
                     System.out.print("Password: ");
                     password = myObj.nextLine();
                     //setelah user nginputkan data login, jalankan fungsi login
-                    System.out.println(login(username, password));
+                    Person result = login(username, password);
+                    if (result == null) {
+                        System.out.print("KREDENSIAL YANG DIBERIKAN TIDAK BENAR");
+                        continue;
+                    } else {
+                        if (result.getOtorisasi().equals("admin")) {
+                            menuAdmin();
+                            System.out.print("Masukkan Pilihan: ");
+                            pil2 = myObj.nextLine();
+                            switch(pil2) {
+                                case "1" -> {
+                                    templateAdmin("Game");
+                                    System.out.print("Masukkan Pilihan: ");
+                                    pil3 = myObj.nextLine();
+                                    break;
+                                }
+                                case "2" -> {
+                                    templateAdmin("User");
+                                    System.out.print("Masukkan Pilihan: ");
+                                    pil3 = myObj.nextLine();
+                                    switch(pil3) {
+                                        case "1" -> {
+                                            try {
+                                                String query = "SELECT * FROM users WHERE otorisasi='user'";
+                                                ResultSet resultSet = query(query);
+                                                while (resultSet.next()) {
+                                                    String resultId = resultSet.getString(1);
+                                                    String resultUsername = resultSet.getString(2);
+                                                    String resultPassword = resultSet.getString(3);
+                                                    String resultNama = resultSet.getString(4);
+                                                    String resultAlamat = resultSet.getString(5);
+                                                    String resultNoTelp = resultSet.getString(6);
+                                                    String resultOtorisasi = resultSet.getString(7);
+                                                    Person users = new Person(
+                                                        resultId,
+                                                        resultUsername,
+                                                        resultPassword,
+                                                        resultOtorisasi,
+                                                        resultNama,
+                                                        resultAlamat,
+                                                        resultNoTelp
+                                                    );                             
+                                                    dataPerson.add(users);
+                                                }
+//                                                for (int i = 0; i < dataPerson.size(); i++) {
+//                                                    System.out.println(dataPerson.get(i).getId());
+//                                                }
+                                                String leftAlignFormat = "| %-15s | %-15s | %-15s | %-15s | %-32s | %-43s |%n";
+
+                                                System.out.format("+-----------------+-----------------+-----------------+-----------------+----------------------------------+---------------------------------------------+%n");
+                                                System.out.format("| Username        | Password        | Nama            | No Telepon      |  Alamat                          | ID                                          |%n");
+                                                System.out.format("+-----------------+-----------------+-----------------+-----------------+----------------------------------+---------------------------------------------+%n");
+                                                for (int i = 0; i < 5; i++) {
+                                                    System.out.format(
+                                                            leftAlignFormat, 
+                                                            dataPerson.get(i).getUsername(), 
+                                                            dataPerson.get(i).getPassword(), 
+                                                            dataPerson.get(i).getNama(), 
+                                                            dataPerson.get(i).getNoTelp(), 
+                                                            dataPerson.get(i).getAlamat(), 
+                                                            dataPerson.get(i).getId()
+                                                    );
+                                                }
+                                                System.out.format("+-----------------+-----------------+-----------------+-----------------+----------------------------------+---------------------------------------------+%n");
+                                            } catch(Exception e) {
+                                                System.out.println(e);
+                                            }
+
+                                        }
+                                        case "2" -> {
+                                            
+                                        }
+                                        case "3" -> {
+                                            
+                                        }
+                                        case "4" -> {
+                                            
+                                        }
+                                    }
+                                    break;
+                                }
+                                case "3" -> {
+                                    templateAdmin("Riwayat Pembelian");
+                                    System.out.print("Masukkan Pilihan: ");
+                                    pil3 = myObj.nextLine();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
                 }
                 case "2" -> {
                     System.out.println("==========REGISTER==========");
@@ -179,6 +287,7 @@ public class Main {
                     noTelp = myObj.nextLine();
                     //setelah user nginputkan data register, jalankan fungsi register
                     System.out.println(register(username, password, nama, alamat, noTelp));
+                    break;
                 }
                 case "3" -> {
                     System.out.println("===========KELUAR===========");
@@ -187,6 +296,7 @@ public class Main {
                     myObj.close();
                     // end program
                     repeat = false;
+                    break;
                 }
             }
         }
