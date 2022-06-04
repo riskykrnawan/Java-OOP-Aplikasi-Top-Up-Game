@@ -7,14 +7,13 @@ class Game {
     private final String idGame = "game-" + uuid.toString();
 
     private String namaGame, tanggalRilis;
-    private int hargaGame, ratingGame, stokGame;
+    private int hargaGame, ratingGame;
 
-    public Game(String namaGame, String tanggalRilis, int hargaGame, int ratingGame, int stokGame) {
+    public Game(String namaGame, String tanggalRilis, int hargaGame, int ratingGame) {
         this.namaGame = namaGame;
         this.tanggalRilis = tanggalRilis;
         this.hargaGame = hargaGame;
         this.ratingGame = ratingGame;
-        this.stokGame = stokGame;
     }
 
     public String getIdGame() {
@@ -37,10 +36,6 @@ class Game {
         return ratingGame;
     }
 
-    public int getStokGame() {
-        return stokGame;
-    }
-
     public void setNamaGame(String namaGame) {
         this.namaGame = namaGame;
     }
@@ -55,10 +50,6 @@ class Game {
 
     public void setRatingGame(int ratingGame) {
         this.ratingGame = ratingGame;
-    }
-
-    public void setStokGame(int stokGame) {
-        this.stokGame = stokGame;
     }
     
 }
