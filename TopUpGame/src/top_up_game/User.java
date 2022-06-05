@@ -2,7 +2,6 @@ package top_up_game;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.UUID;
 import static top_up_game.Main.query;
 import static top_up_game.Main.update;
 
@@ -132,7 +131,7 @@ abstract class User {
             String alamat,
             String noTelp
         ) {
-       try {
+        try {
             String query = "INSERT INTO users "
                             + "(id, username, password, nama, alamat, noTelp, otorisasi) "
                             + "VALUES ("
@@ -175,7 +174,7 @@ abstract class User {
                     resultNama,
                     resultAlamat,
                     resultNoTelp
-                );                             
+                );
                 n.add(users);
                 resultId = null;
                 resultUsername = null;

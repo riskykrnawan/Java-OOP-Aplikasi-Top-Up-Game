@@ -93,11 +93,15 @@ public class Main {
     public static void main(String[] args) {              
         // declare variable
         Scanner myObj = new Scanner(System.in);
+        
         ArrayList<Person> dataPerson = new ArrayList<>();
+        ArrayList<Game> dataGames = new ArrayList<>();
+        
         boolean repeat = true, repeat2 = true;
         String pil, pil2, pil3, pil4, pil5;
         String username, password, nama, alamat, noTelp;
-
+        String deskripsi;
+        
         String[] pembayaran = {"gopay","OVO","DANA","ATM"};
         ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
         metodePembayaran.addAll(Arrays.asList(pembayaran));
@@ -139,6 +143,30 @@ public class Main {
                                         templateAdmin2("Game");
                                         System.out.print("Masukkan Pilihan: ");
                                         pil3 = myObj.nextLine();
+                                        switch(pil3) {
+                                            case "1" -> {
+                                                // read game
+                                                Game.getGames(dataGames);
+                                                System.out.print("\nTekan Untuk Melanjutkan...");
+                                                myObj.nextLine();
+                                            }
+                                            case "2" -> {
+                                                // add game
+                                                System.out.print("Nama: ");
+                                                nama = myObj.nextLine();
+                                                System.out.print("Deskripsi: ");
+                                                deskripsi = myObj.nextLine();
+
+                                                final UUID uuid = UUID.randomUUID();
+                                                final String id = "game-" + uuid.toString();
+                                                
+                                                System.out.println(Game.addGame(id, nama, deskripsi));
+                                                nama = null;
+                                                deskripsi = null;
+                                                break;
+                                            }
+                                            
+                                        }
                                         break;
                                     }
                                     case "2" -> {
@@ -147,11 +175,13 @@ public class Main {
                                         pil3 = myObj.nextLine();
                                         switch(pil3) {
                                             case "1" -> {
+                                                // read user
                                                 User.getUsers(dataPerson);
                                                 System.out.print("\nTekan Untuk Melanjutkan...");
                                                 myObj.nextLine();
                                             }
                                             case "2" -> {
+                                                // update user
                                                 User.getUsers(dataPerson);
                                                 System.out.println("Pilih No. User yang mau diubah.");
                                                 System.out.print("Masukkan Pilihan: ");
@@ -190,6 +220,7 @@ public class Main {
                                                 break;
                                             }
                                             case "3" -> {
+                                                // delete user
                                                 User.getUsers(dataPerson);
                                                 System.out.println("Pilih No. User yang mau dihapus.");
                                                 System.out.print("Masukkan Pilihan: ");
