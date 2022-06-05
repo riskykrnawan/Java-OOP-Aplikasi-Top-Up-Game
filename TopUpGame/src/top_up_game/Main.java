@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 /*
@@ -96,7 +97,11 @@ public class Main {
         boolean repeat = true, repeat2 = true;
         String pil, pil2, pil3, pil4, pil5;
         String username, password, nama, alamat, noTelp;
-                
+
+        String[] pembayaran = {"gopay","OVO","DANA","ATM"};
+        ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
+        metodePembayaran.addAll(Arrays.asList(pembayaran));
+
         while(repeat) {
             System.out.println("===== TOKO GAME ETAM =====");
             System.out.println("1. Login");
