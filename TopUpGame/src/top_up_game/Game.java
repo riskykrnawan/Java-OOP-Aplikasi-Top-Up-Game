@@ -4,6 +4,7 @@ package top_up_game;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
 import static top_up_game.Main.query;
 import static top_up_game.Main.update;
 
@@ -104,6 +105,23 @@ class Game {
             System.out.println(e);
         }
     }
+
+    static String getNamaGame(ArrayList<Game> n, int nomor) {
+        String namaGame = null;
+        try {           
+            n.clear();
+            String query = "SELECT * FROM games";
+            ResultSet resultSet = query(query);
+            for(int i = 0; i < nomor; i++) {
+                resultSet.next();
+                namaGame = resultSet.getString(2);
+            }
+            return namaGame;
+        } catch(Exception e) {
+            System.out.println(e);
+            return namaGame;
+        }
+    }
     
     static Game getGameById(String id) {
         Game result = null;
@@ -157,4 +175,9 @@ class Game {
         }
         return "GAGAL MENGHAPUS GAME, TERJADI KEGAGALAN PADA SERVER";
     }    
+
+    static void topUp(String game, int voucher, String idgame) {
+        // informasi berhasil top up
+    }
+
 }
