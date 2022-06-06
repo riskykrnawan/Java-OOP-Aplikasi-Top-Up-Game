@@ -3,12 +3,10 @@ package top_up_game;
 
 import java.util.Scanner;
 import java.sql.Connection;
-// import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 /*
@@ -48,6 +46,7 @@ public class Main {
 
     static void menuUser() {
         System.out.println("1. Lihat Data Game");
+        System.out.println("2. Edit Akun");
         System.out.println("0. Logout");
     }
     
@@ -111,8 +110,8 @@ public class Main {
         String deskripsi;
         
         String[] pembayaran = {"gopay","OVO","DANA","ATM"};
-        ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
-        metodePembayaran.addAll(Arrays.asList(pembayaran));
+        // ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
+        // metodePembayaran.addAll(Arrays.asList(pembayaran));
 
         while(repeat) {
             System.out.println("===== TOKO GAME ETAM =====");
@@ -291,17 +290,54 @@ public class Main {
                                 pil2 = myObj.nextLine();
                                 switch(pil2) {
                                     case "1" -> {
+                                        System.out.println("\n\n=== Silahkan Lakukan TopUp ===");
                                         Game.getGames(dataGames);
+
+                                        // milih game
                                         System.out.print("Pilih nomor game : ");
-                                        int numb = myObj.nextInt(); myObj.nextLine();
-                                        String game = Game.getNamaGame(dataGames, numb);
-                                        // System.out.println(game);
+                                        String numb = myObj.nextLine();
+                                        String game = Game.getNamaGame(dataGames, Integer.parseInt(numb));
+
+                                        // milih jumlah topup
                                         // Voucher.getVoucher(dataVoucher);
                                         System.out.print("Pilih nominal TopUp : ");
-                                        int voucher = myObj.nextInt(); myObj.nextLine();
+                                        String voucher = myObj.nextLine();
+
+                                        // milih metode topUp
+                                        for(int i = 0; i < pembayaran.length; i++) {
+                                            System.out.println((i+1) + ". " + pembayaran[i]);
+                                        }
+                                        System.out.print("Pilih metode pembayaran anda : ");
+                                        String nomor = myObj.nextLine();
+                                        String metode = pembayaran[Integer.parseInt(nomor)-1];
+
+                                        // input id game user
                                         System.out.print("Masukkan id game anda : ");
                                         String idgame = myObj.nextLine();
-                                        Game.topUp(game, voucher, idgame);
+
+                                        Game.topUp(game, voucher, metode, idgame);
+                                        break;
+                                    }
+                                    case "2" -> {
+                                        System.out.println("\n\n=== Silahkan Masukkan Data Baru Akun Anda ===");
+                                        System.out.print("Username: ");
+                                        username = myObj.nextLine();
+                                        System.out.print("Password: ");
+                                        password = myObj.nextLine();
+                                        System.out.print("Nama: ");
+                                        nama = myObj.nextLine();
+                                        System.out.print("Alamat: ");
+                                        alamat = myObj.nextLine();
+                                        System.out.print("No Telp: ");
+                                        noTelp = myObj.nextLine();
+
+                                        System.out.println(User.updateUserById(result.getId(), username, password, nama, alamat, noTelp));
+
+                                        username = null;
+                                        password = null;
+                                        nama = null;
+                                        alamat = null;
+                                        noTelp = null;
                                         break;
                                     }
                                     case "0" -> {

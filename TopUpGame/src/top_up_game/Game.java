@@ -116,11 +116,10 @@ class Game {
                 resultSet.next();
                 namaGame = resultSet.getString(2);
             }
-            return namaGame;
         } catch(Exception e) {
             System.out.println(e);
-            return namaGame;
         }
+        return namaGame;
     }
     
     static Game getGameById(String id) {
@@ -176,8 +175,12 @@ class Game {
         return "GAGAL MENGHAPUS GAME, TERJADI KEGAGALAN PADA SERVER";
     }    
 
-    static void topUp(String game, int voucher, String idgame) {
-        // informasi berhasil top up
+    static void topUp(String game, String voucher, String pembayaran, String idgame) {
+        // (keterangan sementara)
+        System.out.println("Berhasil TopUp Game: " + game);
+        System.out.println("Dengan nominal: " + voucher);
+        System.out.println("Metode Pembayaran: " + pembayaran);
+        System.out.println("Dengan ID Game: " + idgame);
     }
 
 }
