@@ -175,6 +175,52 @@ public class Main {
                                                     deskripsi = null;
                                                     break;
                                                 }
+                                                case "3" -> {
+                                                    // update game
+                                                    Game.getGames(dataGames);
+                                                    System.out.println("Pilih No. game yang ingin diubah.");
+                                                    System.out.print("Masukkan Pilihan: ");
+                                                    pil4 = myObj.nextLine();
+
+                                                    Game selectedGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId());
+                                                    System.out.println("\n\n=== Data Game yang anda pilih ===");
+                                                    System.out.println("ID        : " + selectedGame.getId());
+                                                    System.out.println("Nama      : " + selectedGame.getNama());
+                                                    System.out.println("Deskripsi : " + selectedGame.getDeskripsi());
+
+                                                    System.out.println("\n\n=== Masukkan Data Baru Game ===");
+                                                    System.out.print("Nama: ");
+                                                    nama = myObj.nextLine();
+                                                    System.out.print("Deskripsi: ");
+                                                    deskripsi = myObj.nextLine();
+
+                                                    System.out.println(Game.updateGameById(selectedGame.getId(), nama, deskripsi));
+                                                    nama = null;
+                                                    deskripsi = null;
+                                                    break;
+                                                }
+                                                case "4" -> {
+                                                    // delete game
+                                                    Game.getGames(dataGames);
+                                                    System.out.println("Pilih No. game yang ingin dihapus.");
+                                                    System.out.print("Masukkan Pilihan: ");
+                                                    pil4 = myObj.nextLine();
+
+                                                    Game selectedGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId());
+                                                    System.out.println("\n\n=== Data Game yang anda pilih ===");
+                                                    System.out.println("ID        : " + selectedGame.getId());
+                                                    System.out.println("Nama      : " + selectedGame.getNama());
+                                                    System.out.println("Deskripsi : " + selectedGame.getDeskripsi());
+
+                                                    System.out.println("Apakah anda yakin ingin menghapus user ini ? (Y/N)");
+                                                    System.out.print("Masukkan Pilihan: ");
+                                                    pil5 = myObj.nextLine();
+                                                    if (pil5.equals("Y") || pil5.equals("y")) {
+                                                        System.out.println(Game.deleteGameById(selectedGame.getId()));
+                                                    } else {
+                                                        continue;
+                                                    }
+                                                }
                                                 case "0" -> {
                                                     repeat3 = false;
                                                 }
@@ -212,7 +258,6 @@ public class Main {
                                                     System.out.println("NoTelp      : " + selectedUser.getNoTelp());
                                                     
                                                     System.out.println("\n\n=== Silahkan Masukkan Data Baru User ===");
-                                                    
                                                     System.out.print("Username: ");
                                                     username = myObj.nextLine();
                                                     System.out.print("Password: ");
