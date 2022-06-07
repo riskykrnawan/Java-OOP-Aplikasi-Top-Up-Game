@@ -148,7 +148,7 @@ class Game {
         try {
             String query = "UPDATE games SET "
                     + "nama='" + nama + "', "
-                    + "deskripsi='" + deskripsi + "', "
+                    + "deskripsi='" + deskripsi + "' "
                     + "WHERE id='" + id + "'";
             int result = update(query);
                 
