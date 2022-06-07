@@ -9,16 +9,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.UUID;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-
-
-/**
- *
- * @author Lenovo-PC
- */
 public class Main {
     static final String URL = "jdbc:mysql://localhost:3306/toko_game";
     static final String USERNAME = "root";
@@ -40,7 +30,8 @@ public class Main {
     static void menuAdmin() {
         System.out.println("1. Pengelolaan Data Game");
         System.out.println("2. Pengelolaan Data User");
-        System.out.println("3. Pengelolaan Data Riwayat Pembelian");
+        System.out.println("3. Pengelolaan Data Voucher");
+        System.out.println("4. Pengelolaan Data Riwayat Pembelian");
         System.out.println("0. Logout");
     }
 
@@ -96,20 +87,181 @@ public class Main {
         }
         return result;
     }
-
+    
+    // Users
+    static String addUser(
+            String id,
+            String username,
+            String password,
+            String nama,
+            String alamat,
+            String noTelp
+        ) {
+        try {
+            String query = "INSERT INTO users "
+                            + "(id, username, password, nama, alamat, noTelp, otorisasi) "
+                            + "VALUES ("
+                            + "'" + id + "', "
+                            + "'" + username + "', "
+                            + "'" + password + "', "
+                            + "'" + nama + "', "
+                            + "'" + alamat + "', "
+                            + "'" + noTelp + "', "
+                            + "'user'"
+                            + ")";
+            int result = update(query);
+            if(result != 0) {
+                return "BERHASIL MENDAFTARKAN AKUN";
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return "AKUN GAGAL DIDAFTARKAN, DATA YANG DIBERIKAN TIDAK BENAR";
+    }
+    
+    static void getUsers(ArrayList<Customer> n) {
+        try {           
+            n.clear();
+            String query = "SELECT * FROM users";
+            ResultSet resultSet = query(query);
+            while (resultSet.next()) {
+                String resultId = resultSet.getString(1);
+                String resultUsername = resultSet.getString(2);
+                String resultPassword = resultSet.getString(3);
+                String resultNama = resultSet.getString(4);
+                String resultAlamat = resultSet.getString(5);
+                String resultNoTelp = resultSet.getString(6);
+                String resultOtorisasi = resultSet.getString(7);
+                Customer user = new Customer(
+                    resultUsername,
+                    resultPassword
+                );
+                user.setId(resultId);
+                user.setNama(resultNama);
+                user.setNoTelp(resultNoTelp);
+                user.setAlamat(resultAlamat);
+                user.setOtorisasi(resultOtorisasi);
+                n.add(user);
+                resultId = null; resultUsername = null; resultPassword = null;
+                resultNama = null; resultAlamat = null; resultNoTelp = null;
+                resultOtorisasi = null;
+            }
+            String leftAlignFormat = "| %-3s | %-15s | %-15s | %-15s | %-15s | %-32s | %-43s |%n";
+            System.out.format("+-----+-----------------+-----------------+-----------------+-----------------+----------------------------------+---------------------------------------------+%n");
+            System.out.format("| No  | Username        | Password        | Nama            | No Telepon      |  Alamat                          | ID                                          |%n");
+            System.out.format("+-----+-----------------+-----------------+-----------------+-----------------+----------------------------------+---------------------------------------------+%n");
+            for (int i = 0; i < n.size(); i++) {
+                System.out.format(
+                        leftAlignFormat, 
+                        i+1,
+                        n.get(i).getUsername(), 
+                        n.get(i).getPassword(), 
+                        n.get(i).getNama(), 
+                        n.get(i).getNoTelp(), 
+                        n.get(i).getAlamat(), 
+                        n.get(i).getId()
+                    );
+            }
+            System.out.format("+-----+-----------------+-----------------+-----------------+-----------------+----------------------------------+---------------------------------------------+%n");
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    static Customer getUserById(String id) {
+        Customer user = null;
+        try {
+            String query = "SELECT * FROM users WHERE id='" + id + "'";
+            ResultSet resultSet = query(query);
+            while (resultSet.next()) {
+                String resultId = resultSet.getString(1);
+                String resultUsername = resultSet.getString(2);
+                String resultPassword = resultSet.getString(3);
+                String resultNama = resultSet.getString(4);
+                String resultAlamat = resultSet.getString(5);
+                String resultNoTelp = resultSet.getString(6);
+                String resultOtorisasi = resultSet.getString(7);
+                user = new Customer(
+                    resultUsername,
+                    resultPassword
+                );
+                user.setId(resultId);
+                user.setNama(resultNama);
+                user.setNoTelp(resultNoTelp);
+                user.setAlamat(resultAlamat);
+                user.setOtorisasi(resultOtorisasi);
+                return user;
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return user;
+    }
+    
+    static String getUserIdByUsername(String username) {
+        try {
+            String query = "SELECT id FROM users WHERE username='" + username + "'";
+            ResultSet resultSet = query(query);
+            while (resultSet.next()) {
+                String resultId = resultSet.getString(1);
+                return resultId;
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return "";
+    }
+    
+    static String updateUserById(String id, String username, String password, String nama, String alamat, String noTelp) {
+        try {
+            String query = "UPDATE users SET "
+                    + "username='" + username + "', "
+                    + "password='" + password + "', "
+                    + "nama='" + nama + "', "
+                    + "alamat='" + alamat + "', "
+                    + "noTelp='" + noTelp + "' "
+                    + "WHERE id='" + id + "'";
+            int result = update(query);
+                
+            if(result != 0) {
+                return "BERHASIL MEMPERBARUI AKUN";
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return "GAGAL MEMPERBARUI AKUN, TERJADI KESALAHAN";
+    }
+    
+    static String deleteUserById(String id) {
+        try {
+            String query = "DELETE FROM users WHERE id='" + id + "'";
+            int result = update(query);
+                
+            if(result != 0) {
+                return "BERHASIL MENGHAPUS AKUN";
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return "GAGAL MENGHAPUS AKUN, TERJADI KEGAGALAN PADA SERVER";
+    }
+    
     public static void main(String[] args) {              
         // declare variable
         Scanner myObj = new Scanner(System.in);
         
-        ArrayList<Person> dataPerson = new ArrayList<>();
+        ArrayList<Customer> dataCustomer = new ArrayList<>();
+        ArrayList<Admin> dataAdmin = new ArrayList<>();
         ArrayList<Game> dataGames = new ArrayList<>();
         
         boolean repeat = true;
         String pil, pil2, pil3, pil4, pil5;
         String username, password, nama, alamat, noTelp;
         String deskripsi;
+        String result;
+        String credentialId;
         
-        String[] pembayaran = {"gopay","OVO","DANA","ATM"};
+        String[] metodePembayaran = {"gopay","OVO","DANA","ATM"};
         // ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
         // metodePembayaran.addAll(Arrays.asList(pembayaran));
 
@@ -130,15 +282,22 @@ public class Main {
                     System.out.print("Password: ");
                     password = myObj.nextLine();
                     //setelah user nginputkan data login, jalankan fungsi login
-                    Person result = User.login(username, password);
-                    username = null;
-                    password = null;
+                    
+                    if (username.equals("admin")) {
+                        Admin user = new Admin(username, password);
+                        result = user.login(username, password);
+                    } else {
+                        Customer user = new Customer(username, password);
+                        result = user.login(username, password);
+                    }
+                    credentialId = getUserIdByUsername(username);
+                    username = null; password = null;
                     
                     if (result == null) {
                         System.out.println("KREDENSIAL YANG DIBERIKAN TIDAK BENAR");
                         continue;
                     } else {
-                        if (result.getOtorisasi().equals("admin")) {
+                        if (result.equals("admin") && credentialId != "") {
                             //menu admin
                             System.out.println("=== SELAMAT DATANG ADMIN === ");
                             boolean repeat2 = true;
@@ -237,18 +396,18 @@ public class Main {
                                             switch(pil3) {
                                                 case "1" -> {
                                                     // read user
-                                                    User.getUsers(dataPerson);
+                                                    getUsers(dataCustomer);
                                                     System.out.print("\nTekan Untuk Melanjutkan...");
                                                     myObj.nextLine();
                                                 }
                                                 case "2" -> {
                                                     // update user
-                                                    User.getUsers(dataPerson);
+                                                    getUsers(dataCustomer);
                                                     System.out.println("Pilih No. User yang mau diubah.");
                                                     System.out.print("Masukkan Pilihan: ");
                                                     pil4 = myObj.nextLine();
                                                     
-                                                    Person selectedUser = User.getUserById(dataPerson.get(Integer.parseInt(pil4)-1).getId());
+                                                    Customer selectedUser = getUserById(dataCustomer.get(Integer.parseInt(pil4)-1).getId());
                                                     System.out.println("\n\n=== Data User yang anda pilih ===");
                                                     System.out.println("ID          : " + selectedUser.getId());
                                                     System.out.println("Username    : " + selectedUser.getUsername());
@@ -269,24 +428,20 @@ public class Main {
                                                     System.out.print("No Telp: ");
                                                     noTelp = myObj.nextLine();
                                                     
-                                                    System.out.println(User.updateUserById(selectedUser.getId(), username, password, nama, alamat, noTelp));
+                                                    System.out.println(updateUserById(selectedUser.getId(), username, password, nama, alamat, noTelp));
                                                     
-                                                    pil4 = null;
-                                                    username = null;
-                                                    password = null;
-                                                    nama = null;
-                                                    alamat = null;
-                                                    noTelp = null;
+                                                    pil4 = null; username = null; password = null;
+                                                    nama = null; alamat = null; noTelp = null;
                                                     break;
                                                 }
                                                 case "3" -> {
                                                     // delete user
-                                                    User.getUsers(dataPerson);
+                                                    getUsers(dataCustomer);
                                                     System.out.println("Pilih No. User yang mau dihapus.");
                                                     System.out.print("Masukkan Pilihan: ");
                                                     pil4 = myObj.nextLine();
                                                     
-                                                    Person selectedUser = User.getUserById(dataPerson.get(Integer.parseInt(pil4)-1).getId());
+                                                    Customer selectedUser = getUserById(dataCustomer.get(Integer.parseInt(pil4)-1).getId());
                                                     System.out.println("\n\n=== Data User yang anda pilih ===");
                                                     System.out.println("ID          : " + selectedUser.getId());
                                                     System.out.println("Username    : " + selectedUser.getUsername());
@@ -299,7 +454,7 @@ public class Main {
                                                     System.out.print("Masukkan Pilihan: ");
                                                     pil5 = myObj.nextLine();
                                                     if (pil5.toLowerCase().equals("y")){
-                                                        System.out.println(User.deleteUserById(selectedUser.getId()));
+                                                        System.out.println(deleteUserById(selectedUser.getId()));
                                                     } else {
                                                         continue;
                                                     }
@@ -325,7 +480,7 @@ public class Main {
                                 }
                                 
                             }
-                        } else if (result.getOtorisasi().equals("user")) {
+                        } else if (result.equals("user") && credentialId != "") {
                             //menu user
                             System.out.println("=== SELAMAT DATANG USER === ");
                             boolean repeat2 = true;
@@ -349,12 +504,12 @@ public class Main {
                                         String voucher = myObj.nextLine();
 
                                         // milih metode topUp
-                                        for(int i = 0; i < pembayaran.length; i++) {
-                                            System.out.println((i+1) + ". " + pembayaran[i]);
+                                        for(int i = 0; i < metodePembayaran.length; i++) {
+                                            System.out.println((i+1) + ". " + metodePembayaran[i]);
                                         }
                                         System.out.print("Pilih metode pembayaran anda : ");
                                         String nomor = myObj.nextLine();
-                                        String metode = pembayaran[Integer.parseInt(nomor)-1];
+                                        String metode = metodePembayaran[Integer.parseInt(nomor)-1];
 
                                         // input id game user
                                         System.out.print("Masukkan id game anda : ");
@@ -364,6 +519,16 @@ public class Main {
                                         break;
                                     }
                                     case "2" -> {
+                                        Customer selectedUser = getUserById(credentialId);
+                                        System.out.println("\n\n=== Data Anda Sebelumnya ===");
+                                        System.out.println("ID          : " + selectedUser.getId());
+                                        System.out.println("Username    : " + selectedUser.getUsername());
+                                        System.out.println("Password    : " + selectedUser.getPassword());
+                                        System.out.println("Nama        : " + selectedUser.getNama());
+                                        System.out.println("Alamat      : " + selectedUser.getAlamat());
+                                        System.out.println("NoTelp      : " + selectedUser.getNoTelp());
+                                        
+                                        
                                         System.out.println("\n\n=== Silahkan Masukkan Data Baru Akun Anda ===");
                                         System.out.print("Username: ");
                                         username = myObj.nextLine();
@@ -376,14 +541,8 @@ public class Main {
                                         System.out.print("No Telp: ");
                                         noTelp = myObj.nextLine();
 
-                                        System.out.println(User.updateUserById(result.getId(), username, password, nama, alamat, noTelp));
-
-                                        username = null;
-                                        password = null;
-                                        nama = null;
-                                        alamat = null;
-                                        noTelp = null;
-                                        break;
+                                        System.out.println(updateUserById(credentialId, username, password, nama, alamat, noTelp));
+                                        break;                                        
                                     }
                                     case "0" -> {
                                         System.out.println("Keluar akun...");
@@ -414,7 +573,7 @@ public class Main {
                     final String id = "user-" + uuid.toString();
                     
                     //setelah user nginputkan data register, jalankan fungsi register
-                    System.out.println(User.addUser(id, username, password, nama, alamat, noTelp));
+                    System.out.println(addUser(id, username, password, nama, alamat, noTelp));
                     username = null;
                     password = null;
                     nama = null;
