@@ -89,6 +89,7 @@ public class Main {
     }
     
     // Users
+    // ini dipakai pas daftar akun user di menu 2
     static String addUser(
             String id,
             String username,
@@ -240,12 +241,15 @@ public class Main {
             if(result != 0) {
                 return "BERHASIL MENGHAPUS AKUN";
             }
+          //ErHand
         } catch(Exception e) {
             System.out.println(e);
         }
         return "GAGAL MENGHAPUS AKUN, TERJADI KEGAGALAN PADA SERVER";
     }
     
+    
+//  MENU
     public static void main(String[] args) {              
         // declare variable
         Scanner myObj = new Scanner(System.in);
@@ -261,13 +265,14 @@ public class Main {
         String result;
         String credentialId;
         
-        String[] metodePembayaran = {"gopay","OVO","DANA","ATM"};
+        String[] metodePembayaran = {"gopay","OVO","DANA","ATM","Wallet", "Link Aja","Alfamart","Indomaret"};
         // ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
         // metodePembayaran.addAll(Arrays.asList(pembayaran));
-
+        
+//      MENU
         while(repeat) {
-            System.out.println("===== TOKO GAME ETAM =====");
-            System.out.println("1. Login");
+            System.out.println("\n===== TOKO GAME ETAM =====");
+            System.out.println("1. Login"); // ini kalo login admin sama user campur
             System.out.println("2. Register");
             System.out.println("0. Keluar");
             System.out.println("==========================");
@@ -276,13 +281,13 @@ public class Main {
             
             switch(pil) {
                 case "1" -> {
-                    System.out.println("===========LOGIN===========");
+                    System.out.println("\n===========LOGIN===========");
                     System.out.print("Username: ");
                     username = myObj.nextLine();
                     System.out.print("Password: ");
                     password = myObj.nextLine();
                     //setelah user nginputkan data login, jalankan fungsi login
-                    
+                    // disini tenpat login sebagai admin atau user
                     if (username.equals("admin")) {
                         Admin user = new Admin(username, password);
                         result = user.login(username, password);
@@ -293,12 +298,14 @@ public class Main {
                     credentialId = getUserIdByUsername(username);
                     username = null; password = null;
                     
+                    // ErHand
                     if (result == null) {
                         System.out.println("KREDENSIAL YANG DIBERIKAN TIDAK BENAR");
                         continue;
                     } else {
                         if (result.equals("admin") && credentialId != "") {
-                            //menu admin
+                           
+                            //MENU ADMIN
                             System.out.println("=== SELAMAT DATANG ADMIN === ");
                             boolean repeat2 = true;
                             while(repeat2) {
@@ -481,7 +488,8 @@ public class Main {
                                 
                             }
                         } else if (result.equals("user") && credentialId != "") {
-                            //menu user
+                            
+                            // MENU USER
                             System.out.println("=== SELAMAT DATANG USER === ");
                             boolean repeat2 = true;
                             while(repeat2) {
@@ -489,6 +497,8 @@ public class Main {
                                 System.out.print("Masukkan Pilihan: ");
                                 pil2 = myObj.nextLine();
                                 switch(pil2) {
+                                    
+                                    // Lihat game dan juga TopUp
                                     case "1" -> {
                                         System.out.println("\n\n=== Silahkan Lakukan TopUp ===");
                                         Game.getGames(dataGames);
@@ -518,6 +528,8 @@ public class Main {
                                         Game.topUp(game, voucher, metode, idgame);
                                         break;
                                     }
+                                    
+                                    // Edit akun (username, password, nama, alamat, notelp)
                                     case "2" -> {
                                         Customer selectedUser = getUserById(credentialId);
                                         System.out.println("\n\n=== Data Anda Sebelumnya ===");
@@ -555,8 +567,10 @@ public class Main {
                     }
                     break;
                 }
+                
+                // Buat akun
                 case "2" -> {
-                    System.out.println("==========REGISTER==========");
+                    System.out.println("\n==========REGISTER==========");
                     
                     System.out.print("Username: ");
                     username = myObj.nextLine();

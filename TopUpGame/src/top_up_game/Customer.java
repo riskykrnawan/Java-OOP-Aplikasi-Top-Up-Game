@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package top_up_game;
 
 import java.sql.ResultSet;
 import static top_up_game.Main.query;
 
-/**
- *
- * @author Lenovo-PC
- */
 public class Customer extends Person implements User{
     private String id;
     // constructor
