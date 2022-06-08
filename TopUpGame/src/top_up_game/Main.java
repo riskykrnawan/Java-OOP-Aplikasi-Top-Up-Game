@@ -257,6 +257,7 @@ public class Main {
         ArrayList<Customer> dataCustomer = new ArrayList<>();
         ArrayList<Admin> dataAdmin = new ArrayList<>();
         ArrayList<Game> dataGames = new ArrayList<>();
+        ArrayList<Voucher> dataVouchers = new ArrayList<>();
         
         boolean repeat = true;
         String pil, pil2, pil3, pil4, pil5;
