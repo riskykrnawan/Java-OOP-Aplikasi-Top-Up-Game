@@ -8,7 +8,7 @@ import static top_up_game.Main.update;
 
 
 class Voucher {
-    private String id,idGame;
+    private String id,idGame; // mungkin idGame bisa final?
     private int nominalVoucher, hargaVoucher;  
     
     public Voucher (String id, String idGame,int nominalVoucher, int hargaVoucher ){
@@ -94,6 +94,7 @@ class Voucher {
                 n.add(vouchers);
                 resultId = null;
                 resultIdGame = null;
+                
 //                resultNominalVoucher = null;
 //                resultHargaVoucher = null;
             }
@@ -174,14 +175,6 @@ class Voucher {
         return "GAGAL MENGHAPUS VOUCHER, TERJADI KEGAGALAN PADA SERVER";
     }    
 
-    static void topUp(String game, String voucher, String pembayaran, String idgame) {
-        // (keterangan sementara)
-        System.out.println("Berhasil TopUp Game: " + game);
-        System.out.println("Dengan nominal: " + voucher);
-        System.out.println("Metode Pembayaran: " + pembayaran);
-        System.out.println("Dengan ID Game: " + idgame);
-    }
-    
      
     
 }
