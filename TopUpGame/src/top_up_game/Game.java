@@ -122,21 +122,6 @@ class Game {
         return namaGame;
     }
     
-    static String getNamaGameById(String id) {
-        String resultNamaGame = null;
-        try {
-            String query = "SELECT nama FROM games WHERE id='" + id + "'";
-            ResultSet resultSet = query(query);
-            while (resultSet.next()) {
-                resultNamaGame = resultSet.getString(1);
-                return resultNamaGame;
-            }
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-        return resultNamaGame;
-    }
-    
     static Game getGameById(String id) {
         Game result = null;
         try {
