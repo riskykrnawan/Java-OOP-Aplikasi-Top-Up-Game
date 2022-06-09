@@ -6,13 +6,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
-import static top_up_game.Voucher.getVoucher;
-//import static top_up_game.Voucher.deleteVoucherById;
-//import static top_up_game.Voucher.getVoucherById;
-//import static top_up_game.Voucher.updateVoucherById;
-
 
 public class Main {
     static final String URL = "jdbc:mysql://localhost:3306/toko_game";
@@ -37,12 +34,12 @@ public class Main {
         System.out.println("1. Pengelolaan Data Game");
         System.out.println("2. Pengelolaan Data User");
         System.out.println("3. Pengelolaan Data Voucher");
-        System.out.println("4. Pengelolaan Data Riwayat Pembelian");
+        System.out.println("4. Lihat Data Riwayat Pembelian");
         System.out.println("0. Logout");
     }
 
     static void menuUser() {
-        System.out.println("1. Lihat Data Game");
+        System.out.println("1. Top Up");
         System.out.println("2. Edit Akun");
         System.out.println("0. Logout");
     }
@@ -219,6 +216,20 @@ public class Main {
         return "";
     }
     
+    static String getUsernameById(String id) {
+        try {
+            String query = "SELECT username FROM users WHERE id='" + id + "'";
+            ResultSet resultSet = query(query);
+            while (resultSet.next()) {
+                String resultUsername = resultSet.getString(1);
+                return resultUsername;
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return "";
+    }
+    
     static String updateUserById(String id, String username, String password, String nama, String alamat, String noTelp) {
         try {
             String query = "UPDATE users SET "
@@ -268,6 +279,7 @@ public class Main {
         ArrayList<Admin> dataAdmin = new ArrayList<>();
         ArrayList<Game> dataGames = new ArrayList<>();
         ArrayList<Voucher> dataVouchers = new ArrayList<>();
+        ArrayList<Transaction> dataTransactions = new ArrayList<>();
         
         boolean repeat = true;
         String pil, pil2, pil3, pil4, pil5;
@@ -562,7 +574,7 @@ public class Main {
                                                 }
                                                 case "3" -> {
                                                     // update voucher
-                                                    getVoucher(dataVouchers);
+                                                    Voucher.getVouchers(dataVouchers);
                                                     System.out.println("Pilih No. Voucher yang mau diubah.");
                                                     System.out.print("Masukkan Pilihan: ");
                                                     pil4 = myObj.nextLine();
@@ -590,7 +602,7 @@ public class Main {
                                                 }
                                                 case "4" -> {
                                                     // delete voucher
-                                                    getVoucher(dataVouchers);
+                                                    Voucher.getVouchers(dataVouchers);
                                                     System.out.println("Pilih No. Voucher yang mau dihapus.");
                                                     System.out.print("Masukkan Pilihan: ");
                                                     pil4 = myObj.nextLine();
@@ -624,6 +636,13 @@ public class Main {
                                         }
                                         break;
                                     }
+                                    case "4" -> {
+                                        // read transaksi
+                                        Transaction.getTransactions(dataTransactions);
+                                        System.out.print("\nTekan Untuk Melanjutkan...");
+                                        myObj.nextLine();
+                                        break;
+                                    }
                                     case "0" -> {
                                         System.out.println("Keluar akun...");
                                         repeat2 = false;
@@ -655,13 +674,18 @@ public class Main {
                                         // milih game
                                         System.out.print("Pilih nomor game : ");
                                         String numb = myObj.nextLine();
-                                        String game = Game.getNamaGame(dataGames, Integer.parseInt(numb));
-
-                                        // milih jumlah topup
-                                        // Voucher.getVoucher(dataVoucher);
+                                        String selectedGame = dataGames.get(Integer.parseInt(numb)-1).getId();
+                                        String selectedGameName = Game.getNamaGameById(selectedGame);
+                                        
+                                        // milih jumlah topup                                        
+                                        Voucher.getVouchersByIdGame(dataVouchers, selectedGame);
                                         System.out.print("Pilih nominal TopUp : ");
                                         String voucher = myObj.nextLine();
-
+                                        Voucher selectedVoucher = dataVouchers.get(Integer.parseInt(voucher)-1);
+                                        String selectedIdVoucher = dataVouchers.get(Integer.parseInt(voucher)-1).getId();
+                                        String selectedNominalVoucher = selectedVoucher.getNominalVoucher();
+                                        int selectedHargaVoucher = selectedVoucher.getHargaVoucher();
+                                        
                                         // milih metode topUp
                                         for(int i = 0; i < metodePembayaran.length; i++) {
                                             System.out.println((i+1) + ". " + metodePembayaran[i]);
@@ -672,9 +696,14 @@ public class Main {
 
                                         // input id game user
                                         System.out.print("Masukkan id game anda : ");
-                                        String idgame = myObj.nextLine();
-
-                                        Game.topUp(game, voucher, metode, idgame);
+                                        String userIdGame = myObj.nextLine();
+                                        
+                                        final UUID uuid = UUID.randomUUID();
+                                        final String id = "transaksi-" + uuid.toString();
+                                        
+                                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+                                        
+                                        Transaction.addTransaction(id, selectedIdVoucher, credentialId, selectedGameName, userIdGame, metode, timeStamp, selectedNominalVoucher, selectedHargaVoucher);
                                         break;
                                     }
                                     // Update akun (username, password, nama, alamat, notelp)

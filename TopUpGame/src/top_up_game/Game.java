@@ -192,13 +192,4 @@ class Game {
         }
         return "GAGAL MENGHAPUS GAME, TERJADI KEGAGALAN PADA SERVER";
     }    
-
-    static void topUp(String game, String voucher, String pembayaran, String idgame) {
-        // (keterangan sementara)
-        System.out.println("Berhasil TopUp Game: " + game);
-        System.out.println("Dengan nominal: " + voucher);
-        System.out.println("Metode Pembayaran: " + pembayaran);
-        System.out.println("Dengan ID Game: " + idgame);
-    }
-
 }
