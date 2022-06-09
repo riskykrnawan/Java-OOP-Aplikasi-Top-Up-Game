@@ -581,6 +581,7 @@ public class Main {
                                                     nominalVoucher = myObj.nextLine();
                                                     System.out.print("Harga  : ");
                                                     hargaVoucher = myObj.nextInt();
+                                                    myObj.nextLine();
                                                     
                                                     System.out.println(Voucher.updateVoucherById(selectedVoucher.getId(), idGame, nominalVoucher, hargaVoucher)); // ini klo gk pke Voucher. jg bsa tapi import updateVoucherById nya
                                                     
@@ -612,6 +613,7 @@ public class Main {
                                                 }
                                                 case "0" -> {
                                                     repeat3 = false;
+                                                    break;
                                                 }
                                                 default -> {
                                                     System.out.println("\nMenu yang anda pilih tidak tersedia.");
