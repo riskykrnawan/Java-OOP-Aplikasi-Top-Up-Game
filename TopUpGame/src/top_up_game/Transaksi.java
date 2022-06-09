@@ -3,11 +3,12 @@ package top_up_game;
 
 
 public class Transaksi {
-    private String id,idCustomer, tanggalTransaksi, metodePembayarn;
+    private String id, item, idCustomer, tanggalTransaksi, metodePembayarn;
     private int total;  
     
-    public Transaksi (String id, String idCustomer,String tanggalTransaksi, String metodePembayarn,int total ){
+    public Transaksi (String id, String item, String idCustomer, String tanggalTransaksi, String metodePembayarn,int total ){
         this.id = id;
+        this.item = item;
         this.idCustomer = idCustomer;
         this.tanggalTransaksi = tanggalTransaksi;
         this.metodePembayarn = metodePembayarn;
@@ -20,6 +21,14 @@ public class Transaksi {
 
     public void setId(String id) {
         this.id = id;
+    }
+    
+    public String getItem() {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
     }
 
     public String getIdCustomer() {
