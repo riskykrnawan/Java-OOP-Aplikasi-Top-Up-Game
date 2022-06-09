@@ -66,7 +66,7 @@ class Voucher {
                             + ")";
             int result = update(query);
             if(result != 0) {
-                return "BERHASIL MENAMBAHKAN VOUCHER";
+                return "BERHASIL MENAMBAHKAN VOUCHER\n";
             }
         } catch(Exception e) {
             System.out.println(e);
@@ -98,7 +98,7 @@ class Voucher {
                 resultNominalVoucher = null;
                 resultHargaVoucher = 0;
             }
-            String leftAlignFormat = "| %-3s | %-25s | %-80s | %-43s |%n";
+            String leftAlignFormat = "| %-3s | %-25s | %-35s | %-42s | %-43s |%n";
             System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
             System.out.format("| No  | ID Game                   | Nominal                             | Harga                                      |  ID                                         |%n");
             System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
@@ -106,12 +106,12 @@ class Voucher {
                 System.out.format(
                         leftAlignFormat, 
                         i+1,
-                        Game.getNamaGameById(n.get(i).getIdGame())
+//                        Game.getNamaGameById(n.get(i).getIdGame())
 //                          , n.get(i).getNominalVoucher(), n.get(i).getHargaVoucher(), n.get(i).getId()
-//                        n.get(i).getIdGame(), 
-//                        n.get(i).getNominalVoucher(),
-//                        n.get(i).getHargaVoucher(),
-//                        n.get(i).getId()
+                        n.get(i).getIdGame(), 
+                        n.get(i).getNominalVoucher(),
+                        n.get(i).getHargaVoucher(),
+                        n.get(i).getId()
                     );
             }
             System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
