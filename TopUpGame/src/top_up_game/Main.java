@@ -495,6 +495,7 @@ public class Main {
                                                     getVoucher(dataVouchers);
                                                     System.out.print("\nTekan Untuk Melanjutkan...");
                                                     myObj.nextLine();
+                                                    break;
                                                 }
                                                 case "2" -> {
                                                     // add vouchers
@@ -504,6 +505,7 @@ public class Main {
                                                     nominalVoucher = myObj.nextLine();
                                                     System.out.print("Harga   : ");
                                                     hargaVoucher = myObj.nextInt();
+                                                    myObj.nextLine();
     
                                                     final UUID uuid = UUID.randomUUID();
                                                     final String id = "game-" + uuid.toString();
@@ -535,6 +537,7 @@ public class Main {
                                                     nominalVoucher = myObj.nextLine();
                                                     System.out.print("Harga  : ");
                                                     hargaVoucher = myObj.nextInt();
+                                                    myObj.nextLine();
                                                     
                                                     System.out.println(Voucher.updateVoucherById(selectedVoucher.getId(), idGame, nominalVoucher, hargaVoucher)); // ini klo gk pke Voucher. jg bsa tapi import updateVoucherById nya
                                                     
@@ -566,6 +569,7 @@ public class Main {
                                                 }
                                                 case "0" -> {
                                                     repeat3 = false;
+                                                    break;
                                                 }
                                             }
                                         }
