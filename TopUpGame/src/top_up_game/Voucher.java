@@ -75,7 +75,7 @@ class Voucher {
     }
     
     
-    static void getVoucher(ArrayList<Voucher> n) {
+    static void getVouchers(ArrayList<Voucher> n) {
         try {           
             n.clear();
             String query = "SELECT * FROM vouchers";
@@ -92,29 +92,22 @@ class Voucher {
                     resultHargaVoucher
                 );                             
                 n.add(vouchers);
-                resultId = null;
-                resultIdGame = null;
-                
-                resultNominalVoucher = null;
-                resultHargaVoucher = 0;
             }
-            String leftAlignFormat = "| %-3s | %-25s | %-35s | %-42s | %-43s |%n";
-            System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
-            System.out.format("| No  | ID Game                   | Nominal                             | Harga                                      |  ID                                         |%n");
-            System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
+            String leftAlignFormat = "| %-3s | %-50s | %-35s | %-42s | %-50s |%n";
+            System.out.format("+-----+----------------------------------------------------+-------------------------------------+--------------------------------------------+----------------------------------------------------+%n");
+            System.out.format("| No  | Nama Game                                          | Nominal                             | Harga                                      |  ID                                                |%n");
+            System.out.format("+-----+----------------------------------------------------+-------------------------------------+--------------------------------------------+----------------------------------------------------+%n");
             for (int i = 0; i < n.size(); i++) {
                 System.out.format(
                         leftAlignFormat, 
                         i+1,
-//                        Game.getNamaGameById(n.get(i).getIdGame())
-//                          , n.get(i).getNominalVoucher(), n.get(i).getHargaVoucher(), n.get(i).getId()
-                        n.get(i).getIdGame(), 
+                        Game.getNamaGameById(n.get(i).getIdGame()),
                         n.get(i).getNominalVoucher(),
                         n.get(i).getHargaVoucher(),
                         n.get(i).getId()
                     );
             }
-            System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
+            System.out.format("+-----+----------------------------------------------------+-------------------------------------+--------------------------------------------+----------------------------------------------------+%n");
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -143,6 +136,59 @@ class Voucher {
             System.out.println(e);
         }
         return result;
+    }
+    
+    static String getNominalVoucherById(String id) {
+        try {
+            String query = "SELECT nominalVoucher FROM vouchers WHERE id='" + id + "'";
+            ResultSet resultSet = query(query);
+            while (resultSet.next()) {
+                String resultId = resultSet.getString(1);
+                return resultId;
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return "";
+    }
+    
+    static void getVouchersByIdGame(ArrayList<Voucher> n, String idGame) {
+        n.clear();
+        Voucher result = null;
+        try {
+            String query = "SELECT * FROM vouchers WHERE idGame='" + idGame + "'";
+            ResultSet resultSet = query(query);
+            while (resultSet.next()) {
+                String resultId = resultSet.getString(1);
+                String resultIdGame = resultSet.getString(2);
+                String resultNominalVoucher = resultSet.getString(3);
+                int resultHargaVoucher = resultSet.getInt(4);
+                result = new Voucher(
+                    resultId,
+                    resultIdGame,
+                    resultNominalVoucher,
+                    resultHargaVoucher
+                );
+                n.add(result);
+            }
+            String leftAlignFormat = "| %-3s | %-50s | %-35s | %-42s | %-50s |%n";
+            System.out.format("+-----+----------------------------------------------------+-------------------------------------+--------------------------------------------+----------------------------------------------------+%n");
+            System.out.format("| No  | Nama Game                                          | Nominal                             | Harga                                      |  ID                                                |%n");
+            System.out.format("+-----+----------------------------------------------------+-------------------------------------+--------------------------------------------+----------------------------------------------------+%n");
+            for (int i = 0; i < n.size(); i++) {
+                System.out.format(
+                        leftAlignFormat, 
+                        i+1,
+                        Game.getNamaGameById(n.get(i).getIdGame()),
+                        n.get(i).getNominalVoucher(),
+                        n.get(i).getHargaVoucher(),
+                        n.get(i).getId()
+                    );
+            }
+            System.out.format("+-----+----------------------------------------------------+-------------------------------------+--------------------------------------------+----------------------------------------------------+%n");
+        } catch(Exception e) {
+            System.out.println(e);
+        }
     }
     
     static String updateVoucherById(String id, String idGame, String nominalVoucher, int hargaVoucher) {
@@ -176,30 +222,4 @@ class Voucher {
         }
         return "GAGAL MENGHAPUS VOUCHER, TERJADI KEGAGALAN PADA SERVER";
     }    
-
-     
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
