@@ -551,7 +551,7 @@ public class Main {
                                             switch(pil3) {
                                                 case "1" -> {
                                                     // read vouchers
-                                                    getVoucher(dataVouchers);
+                                                    Voucher.getVouchers(dataVouchers);
                                                     continueInput();
                                                 }
                                                 case "2" -> {
