@@ -9,9 +9,9 @@ import static top_up_game.Main.update;
 
 class Voucher {
     private String id,idGame; // mungkin idGame bisa final?
-    private int nominalVoucher, hargaVoucher;  
+    private String nominalVoucher, hargaVoucher;  
     
-    public Voucher (String id, String idGame,int nominalVoucher, int hargaVoucher ){
+    public Voucher (String id, String idGame,String nominalVoucher, String hargaVoucher ){
         this.id = id;
         this.idGame = idGame;
         this.nominalVoucher = nominalVoucher;
@@ -31,19 +31,19 @@ class Voucher {
         return idGame;
     }
 
-    public int getNominalVoucher() {
+    public String getNominalVoucher() {
         return nominalVoucher;
     }
 
-    public void setNominalVoucher(int nominalVoucher) {
+    public void setNominalVoucher(String nominalVoucher) {
         this.nominalVoucher = nominalVoucher;
     }
 
-    public int getHargaVoucher() {
+    public String getHargaVoucher() {
         return hargaVoucher;
     }
 
-    public void setHargaVoucher(int hargaVoucher) {
+    public void setHargaVoucher(String hargaVoucher) {
         this.hargaVoucher = hargaVoucher;
     }
     
@@ -52,8 +52,8 @@ class Voucher {
     static String addVoucher(
             String id,     
             String idGame,
-            int nominalVoucher,
-            int hargaVoucher
+            String nominalVoucher,
+            String hargaVoucher
         ) {
         try {
             String query = "INSERT INTO vouchers "
@@ -83,8 +83,8 @@ class Voucher {
             while (resultSet.next()) {
                 String resultId = resultSet.getString(1);
                 String resultIdGame = resultSet.getString(2);
-                int resultNominalVoucher = resultSet.getInt(3);
-                int resultHargaVoucher = resultSet.getInt(4);
+                String resultNominalVoucher = resultSet.getString(3);
+                String resultHargaVoucher = resultSet.getString(4);
                 Voucher vouchers = new Voucher(
                     resultId,
                     resultIdGame,
@@ -95,8 +95,8 @@ class Voucher {
                 resultId = null;
                 resultIdGame = null;
                 
-//                resultNominalVoucher = null;
-//                resultHargaVoucher = null;
+                resultNominalVoucher = null;
+                resultHargaVoucher = null;
             }
             String leftAlignFormat = "| %-3s | %-25s | %-80s | %-43s |%n";
             System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
@@ -127,8 +127,8 @@ class Voucher {
             while (resultSet.next()) {
                 String resultId = resultSet.getString(1);
                 String resultIdGame = resultSet.getString(2);
-                int resultNominalVoucher = resultSet.getInt(3);
-                int resultHargaVoucher = resultSet.getInt(4);
+                String resultNominalVoucher = resultSet.getString(3);
+                String resultHargaVoucher = resultSet.getString(4);
                 result = new Voucher(
                     resultId,
                     resultIdGame,
@@ -143,7 +143,7 @@ class Voucher {
         return result;
     }
     
-    static String updateVoucherById(String id, String idGame, int nominalVoucher, int hargaVoucher) {
+    static String updateVoucherById(String id, String idGame, String nominalVoucher, String hargaVoucher) {
         try {
             String query = "UPDATE vouchers SET "
                     + "idGame='" + idGame + "', "
@@ -161,7 +161,7 @@ class Voucher {
         return "GAGAL MEMPERBARUI VOUCHER, TERJADI KEGAGALAN PADA SERVER";
     }
     
-    static String deleteGameById(String id) {
+    static String deleteVoucherById(String id) {
         try {
             String query = "DELETE FROM vouchers WHERE id='" + id + "'";
             int result = update(query);

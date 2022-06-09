@@ -8,6 +8,11 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.UUID;
+import static top_up_game.Voucher.getVoucher;
+//import static top_up_game.Voucher.deleteVoucherById;
+//import static top_up_game.Voucher.getVoucherById;
+//import static top_up_game.Voucher.updateVoucherById;
+
 
 public class Main {
     static final String URL = "jdbc:mysql://localhost:3306/toko_game";
@@ -265,6 +270,9 @@ public class Main {
         String deskripsi;
         String result;
         String credentialId;
+        String idGame;
+        String nominalVoucher;
+        String hargaVoucher;
         
         String[] metodePembayaran = {"gopay","OVO","DANA","ATM","Wallet", "Link Aja","Alfamart","Indomaret"};
         // ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
@@ -395,7 +403,7 @@ public class Main {
                                         }
                                         break;
                                     }
-                                    case "2" -> {
+                                    case "2" -> { // Pengelolaan Data User
                                         boolean repeat3 = true;
                                         while(repeat3) {
                                             templateAdmin1("User");
@@ -474,10 +482,76 @@ public class Main {
                                         }
                                         break;
                                     }
-                                    case "3" -> {
-                                        templateAdmin2("Riwayat Pembelian");
-                                        System.out.print("Masukkan Pilihan: ");
-                                        pil3 = myObj.nextLine();
+                                    case "3" -> { // Pengelolaan Data Voucher
+     
+                                        boolean repeat3 = true;
+                                        while(repeat3) {
+                                            templateAdmin2("Riwayat Pembelian");
+                                            System.out.print("Masukkan Pilihan: ");
+                                            pil3 = myObj.nextLine();
+                                            switch(pil3) {
+                                                case "1" -> {
+                                                    // read vouchers
+                                                    getVoucher(dataVouchers);
+                                                    System.out.print("\nTekan Untuk Melanjutkan...");
+                                                    myObj.nextLine();
+                                                }
+
+                                                case "3" -> {
+                                                    // update voucher
+                                                    getVoucher(dataVouchers);
+                                                    System.out.println("Pilih No. Voucher yang mau diubah.");
+                                                    System.out.print("Masukkan Pilihan: ");
+                                                    pil4 = myObj.nextLine();
+                                                    
+                                                    Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId());
+                                                    System.out.println("\n\n=== Data Voucher yang anda pilih ===");
+                                                    System.out.println("ID          : " + selectedVoucher.getId());
+                                                    System.out.println("ID Game     : " + selectedVoucher.getIdGame());
+                                                    System.out.println("Nominal     : " + selectedVoucher.getNominalVoucher());
+                                                    System.out.println("Harga       : " + selectedVoucher.getHargaVoucher());
+                                                    
+                                                    System.out.println("\n\n=== Silahkan Masukkan Data Baru Voucher ===");
+                                                    System.out.print("ID Game: ");
+                                                    idGame = myObj.nextLine();
+                                                    System.out.print("Nominal: ");
+                                                    nominalVoucher = myObj.nextLine();
+                                                    System.out.print("Harga  : ");
+                                                    hargaVoucher = myObj.nextLine();
+                                                    
+                                                    System.out.println(Voucher.updateVoucherById(selectedVoucher.getId(), idGame, nominalVoucher, hargaVoucher)); // ini klo gk pke Voucher. jg bsa tapi import updateVoucherById nya
+                                                    
+                                                    pil4 = null; idGame = null; nominalVoucher = null; hargaVoucher = null;
+                                                    break;
+                                                }
+                                                case "4" -> {
+                                                    // delete voucher
+                                                    getVoucher(dataVouchers);
+                                                    System.out.println("Pilih No. Voucher yang mau dihapus.");
+                                                    System.out.print("Masukkan Pilihan: ");
+                                                    pil4 = myObj.nextLine();
+                                                    
+                                                    Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId()); // ini klo gk pke Voucher. jg bsa tapi import getVoucherById nya
+                                                    System.out.println("\n\n=== Data Voucher yang anda pilih ===");
+                                                    System.out.println("ID          : " + selectedVoucher.getId());
+                                                    System.out.println("ID Game     : " + selectedVoucher.getIdGame());
+                                                    System.out.println("Nominal     : " + selectedVoucher.getNominalVoucher());
+                                                    System.out.println("Harga       : " + selectedVoucher.getHargaVoucher());
+                                                    
+                                                    System.out.println("Apakah anda yakin ingin menghapus voucher ini ? (Y/N)");
+                                                    System.out.print("Masukkan Pilihan: ");
+                                                    pil5 = myObj.nextLine();
+                                                    if (pil5.toLowerCase().equals("y")){
+                                                        System.out.println(Voucher.deleteVoucherById(selectedVoucher.getId())); // ini klo gk pke Voucher. jg bsa tapi import deleteVoucherById nya
+                                                    } else {
+                                                        continue;
+                                                    }
+                                                }
+                                                case "0" -> {
+                                                    repeat3 = false;
+                                                }
+                                            }
+                                        }
                                         break;
                                     }
                                     case "0" -> {
