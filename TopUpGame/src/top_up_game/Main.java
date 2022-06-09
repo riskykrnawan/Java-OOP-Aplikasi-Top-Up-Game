@@ -475,9 +475,87 @@ public class Main {
                                         break;
                                     }
                                     case "3" -> {
-                                        templateAdmin2("Riwayat Pembelian");
+                                        templateAdmin2("Voucher");
                                         System.out.print("Masukkan Pilihan: ");
                                         pil3 = myObj.nextLine();
+                                        switch(pil3) {
+                                            case "1" -> {
+                                                Voucher.getVouchers(dataVouchers);
+                                                break;
+                                            }
+                                            case "2" -> {
+                                                // add vouchers
+                                                Game.getGames(dataGames);
+                                                System.out.print("Pilih Game: ");
+                                                pil4 = myObj.nextLine();
+                                                String selectedGame = dataGames.get(Integer.parseInt(pil4)-1).getId();
+                                                System.out.println(selectedGame);
+                                                System.out.print("Nominal Voucher: ");
+                                                String nominal = myObj.nextLine();
+                                                
+                                                System.out.print("Harga Voucher: Rp.");
+                                                int harga = myObj.nextInt();
+
+                                                final UUID uuid = UUID.randomUUID();
+                                                final String id = "voucher-" + uuid.toString();
+
+                                                System.out.println(Voucher.addVoucher(id, selectedGame, nominal, harga));
+                                                nama = null;
+                                                deskripsi = null;
+                                                break;
+                                            }
+                                            case "3" -> {
+                                                // update voucher
+                                                Voucher.getVouchers(dataVouchers);
+                                                System.out.print("Pilih No. Voucher: ");
+                                                pil4 = myObj.nextLine();
+                                                
+                                                Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId());
+                                                System.out.println("\n\n=== Data Voucher yang anda pilih ===");
+                                                System.out.println("ID                  : " + selectedVoucher.getId());
+                                                System.out.println("Nama Game           : " + Game.getNamaGameById(selectedVoucher.getIdGame()));
+                                                System.out.println("Nominal Voucher     : " + selectedVoucher.getNominalVoucher());
+                                                System.out.println("Harga Voucher       : " + selectedVoucher.getHargaVoucher());
+                                                
+                                                System.out.println("\n\n=== Silahkan Masukkan Data Baru User ===");
+                                                System.out.print("Nominal Voucher: ");
+                                                String nominal = myObj.nextLine();
+                                                
+                                                System.out.print("Harga Voucher: Rp.");
+                                                int harga = myObj.nextInt();
+                                                
+                                                Voucher.updateVoucherById(
+                                                        selectedVoucher.getId(), 
+                                                        selectedVoucher.getIdGame(), 
+                                                        nominal,
+                                                        harga
+                                                );
+                                                break;
+                                            }
+                                            case "4" -> {
+                                                // delete game
+                                                Voucher.getVouchers(dataVouchers);
+                                                System.out.println("Pilih No. Voucher yang ingin dihapus.");
+                                                System.out.print("Masukkan Pilihan: ");
+                                                pil4 = myObj.nextLine();
+
+                                                Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId());
+                                                System.out.println("\n\n=== Data Voucher yang anda pilih ===");
+                                                System.out.println("ID                  : " + selectedVoucher.getId());
+                                                System.out.println("Nama Game           : " + Game.getNamaGameById(selectedVoucher.getIdGame()));
+                                                System.out.println("Nominal Voucher     : " + selectedVoucher.getNominalVoucher());
+                                                System.out.println("Harga Voucher       : " + selectedVoucher.getHargaVoucher());
+
+                                                System.out.println("Apakah anda yakin ingin menghapus Voucher ini ? (Y/N)");
+                                                System.out.print("Masukkan Pilihan: ");
+                                                pil5 = myObj.nextLine();
+                                                if (pil5.equals("Y") || pil5.equals("y")) {
+                                                    System.out.println(Voucher.deleteVoucherById(selectedVoucher.getId()));
+                                                } else {
+                                                    continue;
+                                                }
+                                            }
+                                        }
                                         break;
                                     }
                                     case "0" -> {
