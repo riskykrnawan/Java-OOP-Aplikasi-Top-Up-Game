@@ -496,7 +496,24 @@ public class Main {
                                                     System.out.print("\nTekan Untuk Melanjutkan...");
                                                     myObj.nextLine();
                                                 }
-
+                                                case "2" -> {
+                                                    // add vouchers
+                                                    System.out.print("ID Game : ");
+                                                    idGame = myObj.nextLine();
+                                                    System.out.print("Nominal : ");
+                                                    nominalVoucher = myObj.nextLine();
+                                                    System.out.print("Harga   : ");
+                                                    hargaVoucher = myObj.nextLine();
+    
+                                                    final UUID uuid = UUID.randomUUID();
+                                                    final String id = "game-" + uuid.toString();
+                                                    
+                                                    System.out.println(Voucher.addVoucher(id, idGame, nominalVoucher, hargaVoucher)); 
+                                                    idGame = null;
+                                                    nominalVoucher = null;
+                                                    hargaVoucher = null;
+                                                    break;
+                                                }
                                                 case "3" -> {
                                                     // update voucher
                                                     getVoucher(dataVouchers);
