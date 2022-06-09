@@ -144,6 +144,24 @@ class Game {
         return result;
     }
     
+    
+    static String getNamaGameById(String id) {
+        String resultNamaGame = null;
+        try {
+            String query = "SELECT nama FROM games WHERE id='" + id + "'";
+            ResultSet resultSet = query(query);
+            while (resultSet.next()) {
+                resultNamaGame = resultSet.getString(1);
+                return resultNamaGame;
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return resultNamaGame;
+    }
+    
+    
+    
     static String updateGameById(String id, String nama, String deskripsi) {
         try {
             String query = "UPDATE games SET "

@@ -8,10 +8,10 @@ import static top_up_game.Main.update;
 
 
 class Voucher {
-    private String id,idGame; // mungkin idGame bisa final?
-    private String nominalVoucher, hargaVoucher;  
+    private String id,idGame, nominalVoucher; // mungkin idGame bisa final?
+    private int hargaVoucher;  
     
-    public Voucher (String id, String idGame,String nominalVoucher, String hargaVoucher ){
+    public Voucher (String id, String idGame,String nominalVoucher, int hargaVoucher ){
         this.id = id;
         this.idGame = idGame;
         this.nominalVoucher = nominalVoucher;
@@ -39,11 +39,11 @@ class Voucher {
         this.nominalVoucher = nominalVoucher;
     }
 
-    public String getHargaVoucher() {
+    public int getHargaVoucher() {
         return hargaVoucher;
     }
 
-    public void setHargaVoucher(String hargaVoucher) {
+    public void setHargaVoucher(int hargaVoucher) {
         this.hargaVoucher = hargaVoucher;
     }
     
@@ -53,7 +53,7 @@ class Voucher {
             String id,     
             String idGame,
             String nominalVoucher,
-            String hargaVoucher
+            int hargaVoucher
         ) {
         try {
             String query = "INSERT INTO vouchers "
@@ -84,7 +84,7 @@ class Voucher {
                 String resultId = resultSet.getString(1);
                 String resultIdGame = resultSet.getString(2);
                 String resultNominalVoucher = resultSet.getString(3);
-                String resultHargaVoucher = resultSet.getString(4);
+                int resultHargaVoucher = resultSet.getInt(4);
                 Voucher vouchers = new Voucher(
                     resultId,
                     resultIdGame,
@@ -96,7 +96,7 @@ class Voucher {
                 resultIdGame = null;
                 
                 resultNominalVoucher = null;
-                resultHargaVoucher = null;
+                resultHargaVoucher = 0;
             }
             String leftAlignFormat = "| %-3s | %-25s | %-80s | %-43s |%n";
             System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
@@ -106,10 +106,12 @@ class Voucher {
                 System.out.format(
                         leftAlignFormat, 
                         i+1,
-                        n.get(i).getIdGame(), 
-                        n.get(i).getNominalVoucher(),
-                        n.get(i).getHargaVoucher(),
-                        n.get(i).getId()
+                        Game.getNamaGameById(n.get(i).getIdGame())
+//                          , n.get(i).getNominalVoucher(), n.get(i).getHargaVoucher(), n.get(i).getId()
+//                        n.get(i).getIdGame(), 
+//                        n.get(i).getNominalVoucher(),
+//                        n.get(i).getHargaVoucher(),
+//                        n.get(i).getId()
                     );
             }
             System.out.format("+-----+---------------------------+-------------------------------------+--------------------------------------------+---------------------------------------------+%n");
@@ -128,7 +130,7 @@ class Voucher {
                 String resultId = resultSet.getString(1);
                 String resultIdGame = resultSet.getString(2);
                 String resultNominalVoucher = resultSet.getString(3);
-                String resultHargaVoucher = resultSet.getString(4);
+                int resultHargaVoucher = resultSet.getInt(4);
                 result = new Voucher(
                     resultId,
                     resultIdGame,
@@ -143,7 +145,7 @@ class Voucher {
         return result;
     }
     
-    static String updateVoucherById(String id, String idGame, String nominalVoucher, String hargaVoucher) {
+    static String updateVoucherById(String id, String idGame, String nominalVoucher, int hargaVoucher) {
         try {
             String query = "UPDATE vouchers SET "
                     + "idGame='" + idGame + "', "

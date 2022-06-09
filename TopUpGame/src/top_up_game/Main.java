@@ -272,7 +272,7 @@ public class Main {
         String credentialId;
         String idGame;
         String nominalVoucher;
-        String hargaVoucher;
+        int hargaVoucher;
         
         String[] metodePembayaran = {"gopay","OVO","DANA","ATM","Wallet", "Link Aja","Alfamart","Indomaret"};
         // ArrayList<String> metodePembayaran = new ArrayList<String>(Arrays.asList(pembayaran));
@@ -503,7 +503,7 @@ public class Main {
                                                     System.out.print("Nominal : ");
                                                     nominalVoucher = myObj.nextLine();
                                                     System.out.print("Harga   : ");
-                                                    hargaVoucher = myObj.nextLine();
+                                                    hargaVoucher = myObj.nextInt();
     
                                                     final UUID uuid = UUID.randomUUID();
                                                     final String id = "game-" + uuid.toString();
@@ -511,7 +511,7 @@ public class Main {
                                                     System.out.println(Voucher.addVoucher(id, idGame, nominalVoucher, hargaVoucher)); 
                                                     idGame = null;
                                                     nominalVoucher = null;
-                                                    hargaVoucher = null;
+                                                    hargaVoucher = 0;
                                                     break;
                                                 }
                                                 case "3" -> {
@@ -534,11 +534,11 @@ public class Main {
                                                     System.out.print("Nominal: ");
                                                     nominalVoucher = myObj.nextLine();
                                                     System.out.print("Harga  : ");
-                                                    hargaVoucher = myObj.nextLine();
+                                                    hargaVoucher = myObj.nextInt();
                                                     
                                                     System.out.println(Voucher.updateVoucherById(selectedVoucher.getId(), idGame, nominalVoucher, hargaVoucher)); // ini klo gk pke Voucher. jg bsa tapi import updateVoucherById nya
                                                     
-                                                    pil4 = null; idGame = null; nominalVoucher = null; hargaVoucher = null;
+                                                    pil4 = null; idGame = null; nominalVoucher = null; hargaVoucher = 0;
                                                     break;
                                                 }
                                                 case "4" -> {
