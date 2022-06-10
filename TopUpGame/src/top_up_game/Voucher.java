@@ -66,7 +66,7 @@ class Voucher {
                             + ")";
             int result = update(query);
             if(result != 0) {
-                return "BERHASIL MENAMBAHKAN VOUCHER\n";
+                return "\nBERHASIL MENAMBAHKAN VOUCHER";
             }
         } catch(Exception e) {
             System.out.println(e);
@@ -200,12 +200,12 @@ class Voucher {
             int result = update(query);
                 
             if(result != 0) {
-                return "BERHASIL MEMPERBARUI VOUCHER";
+                return "\nBERHASIL MEMPERBARUI VOUCHER";
             }
         } catch(Exception e) {
             System.out.println(e);
         }
-        return "GAGAL MEMPERBARUI VOUCHER, TERJADI KEGAGALAN PADA SERVER";
+        return "\nGAGAL MEMPERBARUI VOUCHER, TERJADI KEGAGALAN PADA SERVER";
     }
     
     static String deleteVoucherById(String id) {
