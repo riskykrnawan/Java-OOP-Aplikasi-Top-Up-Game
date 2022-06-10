@@ -18,12 +18,14 @@ public class Main {
     static final Scanner myObj = new Scanner(System.in);
 
     static void templateAdmin1(String str) {
+        System.out.printf("=== PENGELOLAAN DATA %s === \n", str.toUpperCase());
         System.out.println("1. Lihat Data " + str);
         System.out.println("2. Ubah Data " + str);
         System.out.println("3. Hapus Data " + str);
         System.out.println("0. Kembali");
     }
     static void templateAdmin2(String str) {
+        System.out.printf("=== PENGELOLAAN DATA %s === \n", str.toUpperCase());
         System.out.println("1. Lihat Data " + str);
         System.out.println("2. Tambah Data " + str);
         System.out.println("3. Ubah Data " + str);
@@ -126,7 +128,7 @@ public class Main {
     static void getUsers(ArrayList<Customer> n) {
         try {           
             n.clear();
-            String query = "SELECT * FROM users";
+            String query = "SELECT * FROM users WHERE otorisasi = 'user'";
             ResultSet resultSet = query(query);
             while (resultSet.next()) {
                 String resultId = resultSet.getString(1);
@@ -269,14 +271,17 @@ public class Main {
         System.out.print("Tekan Enter untuk melanjutkan...");
         myObj.nextLine();
     }
+    
+    static void clear_screen() {  
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    }
 
 //  MENU
     public static void main(String[] args) {              
         // declare variable
-        // Scanner myObj = new Scanner(System.in);
-        
         ArrayList<Customer> dataCustomer = new ArrayList<>();
-        ArrayList<Admin> dataAdmin = new ArrayList<>();
+        // ArrayList<Admin> dataAdmin = new ArrayList<>();
         ArrayList<Game> dataGames = new ArrayList<>();
         ArrayList<Voucher> dataVouchers = new ArrayList<>();
         ArrayList<Transaction> dataTransactions = new ArrayList<>();
@@ -295,6 +300,7 @@ public class Main {
         
 //      MENU
         while(repeat) {
+            clear_screen();
             System.out.println("\n===== TOKO GAME ETAM =====");
             System.out.println("1. Login"); // ini kalo login admin sama user campur
             System.out.println("2. Register");
@@ -305,6 +311,7 @@ public class Main {
             
             switch(pil) {
                 case "1" -> {
+                    clear_screen();
                     System.out.println("\n===========LOGIN===========");
                     System.out.print("Username: ");
                     username = myObj.nextLine();
@@ -335,9 +342,10 @@ public class Main {
                     } else {
                         if (result.equals("admin") && credentialId != "") {
                             //MENU ADMIN
-                            System.out.println("=== SELAMAT DATANG ADMIN === ");
                             boolean repeat2 = true;
                             while(repeat2) {
+                                clear_screen();
+                                System.out.println("=== SELAMAT DATANG ADMIN === ");
                                 menuAdmin();
                                 System.out.print("Masukkan Pilihan: ");
                                 pil2 = myObj.nextLine();
@@ -345,6 +353,7 @@ public class Main {
                                     case "1" -> {
                                         boolean repeat3 = true;
                                         while(repeat3) {
+                                            clear_screen();
                                             templateAdmin2("Game");
                                             System.out.print("Masukkan Pilihan: ");
                                             pil3 = myObj.nextLine();
@@ -417,6 +426,7 @@ public class Main {
                                                 }
                                                 case "0" -> {
                                                     repeat3 = false;
+                                                    break;
                                                 }
                                                 default -> {
                                                     System.out.println("\nMenu yang anda pilih tidak tersedia.");
@@ -430,6 +440,7 @@ public class Main {
                                     case "2" -> { // Pengelolaan Data User
                                         boolean repeat3 = true;
                                         while(repeat3) {
+                                            clear_screen();
                                             templateAdmin1("User");
                                             System.out.print("Masukkan Pilihan: ");
                                             pil3 = myObj.nextLine();
@@ -443,65 +454,72 @@ public class Main {
                                                     // update user
                                                     getUsers(dataCustomer);
                                                     System.out.println("Pilih No. User yang mau diubah.");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil4 = myObj.nextLine();
-                                                    
-                                                    Customer selectedUser = getUserById(dataCustomer.get(Integer.parseInt(pil4)-1).getId());
-                                                    System.out.println("\n\n=== Data User yang anda pilih ===");
-                                                    System.out.println("ID          : " + selectedUser.getId());
-                                                    System.out.println("Username    : " + selectedUser.getUsername());
-                                                    System.out.println("Password    : " + selectedUser.getPassword());
-                                                    System.out.println("Nama        : " + selectedUser.getNama());
-                                                    System.out.println("Alamat      : " + selectedUser.getAlamat());
-                                                    System.out.println("NoTelp      : " + selectedUser.getNoTelp());
-                                                    
-                                                    System.out.println("\n\n=== Silahkan Masukkan Data Baru User ===");
-                                                    System.out.print("Username: ");
-                                                    username = myObj.nextLine();
-                                                    if(username.length() < 4) {
-                                                        System.out.println("\nUsername tidak dapat kurang dari 4 karakter.");
-                                                        continueInput();
-                                                        break;
-                                                    }
-                                                    System.out.print("Password: ");
-                                                    password = myObj.nextLine();
-                                                    if(password.length() < 4) {
-                                                        System.out.println("\nPassword tidak dapat kurang dari 4 karakter.");
-                                                        continueInput();
-                                                        break;
-                                                    }
-                                                    System.out.print("Nama: ");
-                                                    nama = myObj.nextLine();
-                                                    if(nama.length() < 3) {
-                                                        System.out.println("\nNama tidak dapat kurang dari 3 karakter.");
-                                                        continueInput();
-                                                        break;
-                                                    }
-                                                    System.out.print("Alamat: ");
-                                                    alamat = myObj.nextLine();
-                                                    if(alamat.length() < 4) {
-                                                        System.out.println("\nAlamat tidak dapat kurang dari 4 karakter.");
-                                                        continueInput();
-                                                        break;
-                                                    }
-                                                    System.out.print("No Telp: ");
-                                                    noTelp = myObj.nextLine();
                                                     try {
-                                                        if(String.valueOf(Long.parseLong(noTelp)).length() < 10) {
-                                                            System.out.println("\nNo Telp tidak dapat kurang dari 10 angka.");
+                                                        System.out.print("Masukkan Pilihan: ");
+                                                        pil4 = myObj.nextLine();
+                                                        
+                                                        Customer selectedUser = getUserById(dataCustomer.get(Integer.parseInt(pil4)-1).getId());
+                                                        System.out.println("\n\n=== Data User yang anda pilih ===");
+                                                        System.out.println("ID          : " + selectedUser.getId());
+                                                        System.out.println("Username    : " + selectedUser.getUsername());
+                                                        System.out.println("Password    : " + selectedUser.getPassword());
+                                                        System.out.println("Nama        : " + selectedUser.getNama());
+                                                        System.out.println("Alamat      : " + selectedUser.getAlamat());
+                                                        System.out.println("NoTelp      : " + selectedUser.getNoTelp());
+                                                        
+                                                        System.out.println("\n\n=== Silahkan Masukkan Data Baru User ===");
+                                                        System.out.print("Username: ");
+                                                        username = myObj.nextLine();
+                                                        if(username.length() < 4) {
+                                                            System.out.println("\nUsername tidak dapat kurang dari 4 karakter.");
                                                             continueInput();
                                                             break;
                                                         }
-                                                    } catch(Exception e) {
-                                                        System.out.println("\nNo Telp tidak dapat terdiri dari huruf.");
+                                                        System.out.print("Password: ");
+                                                        password = myObj.nextLine();
+                                                        if(password.length() < 4) {
+                                                            System.out.println("\nPassword tidak dapat kurang dari 4 karakter.");
+                                                            continueInput();
+                                                            break;
+                                                        }
+                                                        System.out.print("Nama: ");
+                                                        nama = myObj.nextLine();
+                                                        if(nama.length() < 3) {
+                                                            System.out.println("\nNama tidak dapat kurang dari 3 karakter.");
+                                                            continueInput();
+                                                            break;
+                                                        }
+                                                        System.out.print("Alamat: ");
+                                                        alamat = myObj.nextLine();
+                                                        if(alamat.length() < 4) {
+                                                            System.out.println("\nAlamat tidak dapat kurang dari 4 karakter.");
+                                                            continueInput();
+                                                            break;
+                                                        }
+                                                        System.out.print("No Telp: ");
+                                                        noTelp = myObj.nextLine();
+                                                        try {
+                                                            if(String.valueOf(Long.parseLong(noTelp)).length() < 10 || String.valueOf(Long.parseLong(noTelp)).length() > 14) {
+                                                                System.out.println("\nNo Telp tidak dapat kurang dari 10 angka");
+                                                                System.out.println("atau, lebih dari 14 angka.");
+                                                                continueInput();
+                                                                break;
+                                                            }
+                                                        } catch(Exception e) {
+                                                            System.out.println("\nNo Telp tidak dapat terdiri dari huruf.");
+                                                            continueInput();
+                                                            break;
+                                                        }
+                
+                                                        System.out.println("\n"+updateUserById(selectedUser.getId(), username, password, nama, alamat, noTelp));
                                                         continueInput();
-                                                        break;
+                                                        
+                                                        pil4 = null; username = null; password = null;
+                                                        nama = null; alamat = null; noTelp = null;
+                                                    } catch (Exception e) {
+                                                        System.out.println("\nNo. user yang anda pilih tidak tersedia.");
+                                                        continueInput();
                                                     }
-            
-                                                    System.out.println(updateUserById(selectedUser.getId(), username, password, nama, alamat, noTelp));
-                                                    
-                                                    pil4 = null; username = null; password = null;
-                                                    nama = null; alamat = null; noTelp = null;
                                                     break;
                                                 }
                                                 case "3" -> {
@@ -542,9 +560,9 @@ public class Main {
                                         break;
                                     }
                                     case "3" -> { // Pengelolaan Data Voucher
-     
                                         boolean repeat3 = true;
                                         while(repeat3) {
+                                            clear_screen();
                                             templateAdmin2("Voucher");
                                             System.out.print("Masukkan Pilihan: ");
                                             pil3 = myObj.nextLine();
@@ -638,6 +656,7 @@ public class Main {
                                     }
                                     case "4" -> {
                                         // read transaksi
+                                        clear_screen();
                                         Transaction.getTransactions(dataTransactions);
                                         System.out.print("\nTekan Untuk Melanjutkan...");
                                         myObj.nextLine();
@@ -657,17 +676,18 @@ public class Main {
                                 
                             }
                         } else if (result.equals("user") && credentialId != "") {
-                            
                             // MENU USER
-                            System.out.println("=== SELAMAT DATANG USER === ");
                             boolean repeat2 = true;
                             while(repeat2) {
+                                clear_screen();
+                                System.out.println("=== SELAMAT DATANG USER === ");
                                 menuUser();
                                 System.out.print("Masukkan Pilihan: ");
                                 pil2 = myObj.nextLine();
                                 switch(pil2) {
                                     // Lihat game dan juga TopUp
                                     case "1" -> {
+                                        clear_screen();
                                         System.out.println("\n\n=== Silahkan Lakukan TopUp ===");
                                         Game.getGames(dataGames);
 
@@ -708,6 +728,7 @@ public class Main {
                                     }
                                     // Update akun (username, password, nama, alamat, notelp)
                                     case "2" -> {
+                                        clear_screen();
                                         Customer selectedUser = getUserById(credentialId);
                                         System.out.println("\n\n=== Data Anda Sebelumnya ===");
                                         System.out.println("ID          : " + selectedUser.getId());
@@ -750,8 +771,9 @@ public class Main {
                                         System.out.print("No Telp: ");
                                         noTelp = myObj.nextLine();
                                         try {
-                                            if(String.valueOf(Long.parseLong(noTelp)).length() < 10) {
-                                                System.out.println("\nNo Telp tidak dapat kurang dari 10 angka.");
+                                            if(String.valueOf(Long.parseLong(noTelp)).length() < 10 || String.valueOf(Long.parseLong(noTelp)).length() > 14) {
+                                                System.out.println("\nNo Telp tidak dapat kurang dari 10 angka");
+                                                System.out.println("atau, lebih dari 14 angka.");
                                                 continueInput();
                                                 break;
                                             }
@@ -761,7 +783,8 @@ public class Main {
                                             break;
                                         }
 
-                                        System.out.println(updateUserById(credentialId, username, password, nama, alamat, noTelp));
+                                        System.out.println("\n"+updateUserById(credentialId, username, password, nama, alamat, noTelp));
+                                        continueInput();
 
                                         username = null; password = null;
                                         nama = null; alamat = null; noTelp = null;
@@ -786,6 +809,7 @@ public class Main {
                 
                 // Buat akun
                 case "2" -> {
+                    clear_screen();
                     System.out.println("\n==========REGISTER==========");
                     
                     System.out.print("Username: ");
@@ -819,8 +843,9 @@ public class Main {
                     System.out.print("No Telp: ");
                     noTelp = myObj.nextLine();
                     try {
-                        if(String.valueOf(Long.parseLong(noTelp)).length() < 10) {
-                            System.out.println("\nNo Telp tidak dapat kurang dari 10 angka.");
+                        if(String.valueOf(Long.parseLong(noTelp)).length() < 10 || String.valueOf(Long.parseLong(noTelp)).length() > 14) {
+                            System.out.println("\nNo Telp tidak dapat kurang dari 10 angka");
+                            System.out.println("atau, lebih dari 14 angka.");
                             continueInput();
                             break;
                         }
@@ -834,7 +859,9 @@ public class Main {
                     final String id = "user-" + uuid.toString();
                     
                     //setelah user nginputkan data register, jalankan fungsi register
-                    System.out.println(addUser(id, username, password, nama, alamat, noTelp));
+                    System.out.println("\n"+addUser(id, username, password, nama, alamat, noTelp));
+                    continueInput();
+
                     username = null;
                     password = null;
                     nama = null;
@@ -843,6 +870,7 @@ public class Main {
                     break;
                 }
                 case "0" -> {
+                    clear_screen();
                     System.out.println("===========KELUAR===========");
                     System.out.println("Terima Kasih Telah Menggunakan Aplikasi");
                     // close scanner
