@@ -204,7 +204,7 @@ public class Main {
         return user;
     }
     
-    static String getUserIdByUsername(String username) {
+    static String getOneUser(String username, String password) {
         try {
             String query = "SELECT id FROM users WHERE username='" + username + "'";
             ResultSet resultSet = query(query);
@@ -218,7 +218,8 @@ public class Main {
         return "";
     }
     
-    static String getUsernameById(String id) {
+    
+    static String getOneUser(String id) {
         try {
             String query = "SELECT username FROM users WHERE id='" + id + "'";
             ResultSet resultSet = query(query);
@@ -326,7 +327,7 @@ public class Main {
                         Customer user = new Customer(username, password);
                         result = user.login(username, password);
                     }
-                    credentialId = getUserIdByUsername(username);
+                    credentialId = getOneUser(username, password);
                     username = null; password = null;
                     
                     // Error jika Query ada yang salah

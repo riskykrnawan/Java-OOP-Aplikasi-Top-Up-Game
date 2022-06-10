@@ -3,7 +3,6 @@ package top_up_game;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import static top_up_game.Main.getUsernameById;
 import static top_up_game.Main.query;
 import static top_up_game.Main.update;
 
@@ -16,12 +15,11 @@ public class Transaction {
         this.item = item;
         this.idCustomer = idCustomer;
         this.namaGame = namaGame;
-        this.userIdGame = namaGame;
+        this.userIdGame = userIdGame;
         this.tanggalTransaksi = tanggalTransaksi;
         this.metodePembayaran = metodePembayaran;
         this.total = total;
-    } 
-
+    }
     public String getId() {
         return id;
     }
@@ -154,8 +152,8 @@ public class Transaction {
                         resultIdUser,
                         resultNamaGame,
                         resultUserIdGame,
-                        resultMetodePembayaran,
                         resultTanggalTransaksi,
+                        resultMetodePembayaran,
                         resultTotal
                     );                             
                     n.add(transaction);
@@ -169,7 +167,7 @@ public class Transaction {
                         leftAlignFormat, 
                         i+1,
                         Voucher.getNominalVoucherById(n.get(i).getItem()),
-                        getUsernameById(n.get(i).getIdCustomer()),
+                        Main.getOneUser(n.get(i).getIdCustomer()),
                         n.get(i).getNamaGame(),
                         n.get(i).getUserIdGame(),
                         n.get(i).getMetodePembayaran(),
@@ -182,7 +180,5 @@ public class Transaction {
         } catch (Exception e) {
             
         }
-        
-
     }
 }
