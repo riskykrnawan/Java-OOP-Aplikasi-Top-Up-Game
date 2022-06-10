@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.InputMismatchException;
 import java.util.UUID;
 
 public class Main {
@@ -361,6 +360,7 @@ public class Main {
                                             switch(pil3) {
                                                 case "1" -> {
                                                     // read game
+                                                    clear_screen();
                                                     Game.getGames(dataGames);
                                                     continueInput();
                                                 }
@@ -401,6 +401,7 @@ public class Main {
                                                     while(true) {
                                                         try{
                                                             // update game
+                                                            clear_screen();
                                                             Game.getGames(dataGames);
                                                             System.out.println("Pilih No. game yang ingin diubah.");
                                                             System.out.print("Masukkan Pilihan: ");
@@ -436,14 +437,17 @@ public class Main {
                                                             
 
                                                             System.out.println(Game.updateGameById(selectedGame.getId(), nama, deskripsi));
+                                                            continueInput();
                                                             nama = null;
                                                             deskripsi = null;
                                                             break;
                                                         } catch (IndexOutOfBoundsException e) {
                                                             System.out.println("Game tidak ada, masukkan input dengan benar.");
+                                                            continueInput();
                                                             continue;
                                                         } catch (NumberFormatException e) {
                                                             System.out.println("Input harus berupa Integer.");
+                                                            continueInput();
                                                             continue;
                                                         }
                                                     }
@@ -451,6 +455,7 @@ public class Main {
                                                 }
                                                 case "4" -> {
                                                     // delete game
+                                                    clear_screen();
                                                     Game.getGames(dataGames);
                                                     System.out.println("Pilih No. game yang ingin dihapus.");
                                                     while(true) {
@@ -470,15 +475,18 @@ public class Main {
                                                                 pil5 = myObj.nextLine();
                                                                 if (pil5.equals("Y") || pil5.equals("y")) {
                                                                     System.out.println(Game.deleteGameById(selectedGame.getId()));
+                                                                    continueInput();
                                                                 }
                                                                 break;
                                                             }
                                                             break;
                                                         } catch (IndexOutOfBoundsException e) {
                                                             System.out.println("Game tidak ada, masukkan input dengan benar.");
+                                                            continueInput();
                                                             continue;
                                                         } catch (NumberFormatException e) {
                                                             System.out.println("Input harus berupa Integer.");
+                                                            continueInput();
                                                             continue;
                                                         }
                                                     }
@@ -506,11 +514,13 @@ public class Main {
                                             switch(pil3) {
                                                 case "1" -> {
                                                     // read user
+                                                    clear_screen();
                                                     getUsers(dataCustomer);
                                                     continueInput();
                                                 }
                                                 case "2" -> {
                                                     // update user
+                                                    clear_screen();
                                                     getUsers(dataCustomer);
                                                     System.out.println("Pilih No. User yang mau diubah.");
                                                     try {
@@ -583,6 +593,7 @@ public class Main {
                                                 }
                                                 case "3" -> {
                                                     // delete user
+                                                    clear_screen();
                                                     getUsers(dataCustomer);
                                                     System.out.println("Pilih No. User yang mau dihapus.");
                                                     while(true) {
@@ -605,15 +616,18 @@ public class Main {
                                                                 pil5 = myObj.nextLine();
                                                                 if (pil5.toLowerCase().equals("y")){
                                                                     System.out.println(deleteUserById(selectedUser.getId()));
+                                                                    continueInput();
                                                                 }
                                                                 break;
                                                             }
                                                             break;
                                                         } catch (IndexOutOfBoundsException e) {
                                                             System.out.println("User tidak ada, masukkan input dengan benar.");
+                                                            continueInput();
                                                             continue;
                                                         } catch (NumberFormatException e) {
                                                             System.out.println("Input harus berupa Integer.");
+                                                            continueInput();
                                                             continue;
                                                         }
                                                     }
@@ -642,6 +656,7 @@ public class Main {
                                             switch(pil3) {
                                                 case "1" -> {
                                                     // read vouchers
+                                                    clear_screen();
                                                     Voucher.getVouchers(dataVouchers);
                                                     continueInput();
                                                 }
@@ -650,11 +665,24 @@ public class Main {
                                                         // add vouchers
                                                         Game.getGames(dataGames);
                                                         System.out.println("Pilih No. game");
-                                                        System.out.print("Masukkan Pilihan: ");
-                                                        pil4 = myObj.nextLine();
-
-                                                        idGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId()).getId();
-                                                        
+                                                        while(true) {
+                                                            try { 
+                                                                while (true){
+                                                                    System.out.print("Masukkan Pilihan: ");
+                                                                    pil4 = myObj.nextLine();
+                                                                    
+                                                                    idGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId()).getId();
+                                                                    break;
+                                                                }
+                                                            } catch (NumberFormatException e) {
+                                                                System.out.println("Input harus berupa Integer.");
+                                                                continue;
+                                                            } catch (IndexOutOfBoundsException e) {
+                                                                System.out.println("Game yang anda pilih tidak tersedia.");
+                                                                continue;
+                                                            }
+                                                            break;
+                                                        }
                                                         
                                                         while (true){
                                                             System.out.print("Nominal : ");
@@ -692,6 +720,8 @@ public class Main {
                                                     final String id = "voucher-" + uuid.toString();
                                                     
                                                     System.out.println(Voucher.addVoucher(id, idGame, nominalVoucher, hargaVoucher)); 
+                                                    continueInput();
+
                                                     idGame = null;
                                                     nominalVoucher = null;
                                                     hargaVoucher = 0;
@@ -701,12 +731,14 @@ public class Main {
                                                     while(true) {
                                                         try {
                                                             // update voucher
+                                                            clear_screen();
                                                             Voucher.getVouchers(dataVouchers);
                                                             System.out.println("Pilih No. Voucher yang mau diubah.");
                                                             System.out.print("Masukkan Pilihan: ");
                                                             pil4 = myObj.nextLine();
 
                                                             Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId());
+                                                            clear_screen();
                                                             System.out.println("\n\n=== Data Voucher yang anda pilih ===");
                                                             System.out.println("ID          : " + selectedVoucher.getId());
                                                             System.out.println("ID Game     : " + selectedVoucher.getIdGame());
@@ -744,13 +776,17 @@ public class Main {
                                                             }
 
                                                             System.out.println(Voucher.updateVoucherById(selectedVoucher.getId(), nominalVoucher, hargaVoucher)); // ini klo gk pke Voucher. jg bsa tapi import updateVoucherById nya
+                                                            continueInput();
+
                                                             pil4 = null; idGame = null; nominalVoucher = null; hargaVoucher = 0;
                                                             break;
                                                         } catch (IndexOutOfBoundsException e) {
-                                                            System.out.println("Voucher tidak ada, masukkan input dengan benar.");
+                                                            System.out.println("\nVoucher tidak ada, masukkan input dengan benar.");
+                                                            continueInput();
                                                             continue;
                                                         } catch (NumberFormatException e) {
-                                                            System.out.println("Input harus berupa Integer.");
+                                                            System.out.println("\nInput harus berupa Integer.");
+                                                            continueInput();
                                                             continue;
                                                         }
                                                     }
@@ -760,11 +796,13 @@ public class Main {
                                                     while(true) {
                                                         try {
                                                             // delete voucher
+                                                            clear_screen();
                                                             Voucher.getVouchers(dataVouchers);
                                                             System.out.println("Pilih No. Voucher yang mau dihapus.");
                                                             System.out.print("Masukkan Pilihan: ");
                                                             pil4 = myObj.nextLine();
 
+                                                            clear_screen();
                                                             Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId()); // ini klo gk pke Voucher. jg bsa tapi import getVoucherById nya
                                                             System.out.println("\n\n=== Data Voucher yang anda pilih ===");
                                                             System.out.println("ID          : " + selectedVoucher.getId());
@@ -778,17 +816,21 @@ public class Main {
                                                                 pil5 = myObj.nextLine();
                                                                 if (pil5.toLowerCase().equals("y")){
                                                                     System.out.println(Voucher.deleteVoucherById(selectedVoucher.getId())); // ini klo gk pke Voucher. jg bsa tapi import deleteVoucherById nya
+                                                                    continueInput();
                                                                 } else if (pil5.toLowerCase().equals("n")){
                                                                     System.out.println("Voucher Gagal Dihapus."); // ini klo gk pke Voucher. jg bsa tapi import deleteVoucherById nya
+                                                                    continueInput();
                                                                 }
                                                                 break;
                                                             }
                                                             break;
                                                         } catch (IndexOutOfBoundsException e) {
-                                                            System.out.println("Voucher tidak ada, masukkan input dengan benar.");
+                                                            System.out.println("\nVoucher tidak ada, masukkan input dengan benar.");
+                                                            continueInput();
                                                             continue;
                                                         } catch (NumberFormatException e) {
-                                                            System.out.println("Input harus berupa Integer.");
+                                                            System.out.println("\nInput harus berupa Integer.");
+                                                            continueInput();
                                                             continue;
                                                         }
                                                     }
@@ -841,42 +883,62 @@ public class Main {
                                     // Lihat game dan juga TopUp
                                     case "1" -> {
                                         clear_screen();
-                                        System.out.println("\n\n=== Silahkan Lakukan TopUp ===");
+                                        System.out.println("\n=== Silahkan Lakukan TopUp ===");
                                         Game.getGames(dataGames);
-
-                                        // milih game
-                                        System.out.print("Pilih nomor game : ");
-                                        String numb = myObj.nextLine();
-                                        String selectedGame = dataGames.get(Integer.parseInt(numb)-1).getId();
-                                        String selectedGameName = Game.getNamaGameById(selectedGame);
+                                        try {
+                                            // milih game
+                                            System.out.print("Pilih nomor game : ");
+                                            String numb = myObj.nextLine();
+                                            String selectedGame = dataGames.get(Integer.parseInt(numb)-1).getId();
+                                            String selectedGameName = Game.getNamaGameById(selectedGame);
+                                            
+                                            // milih jumlah topup                                        
+                                            Voucher.getVouchersByIdGame(dataVouchers, selectedGame);
+                                            System.out.print("Pilih nominal TopUp : ");
+                                            String voucher = myObj.nextLine();
+                                            Voucher selectedVoucher = dataVouchers.get(Integer.parseInt(voucher)-1);
+                                            String selectedIdVoucher = dataVouchers.get(Integer.parseInt(voucher)-1).getId();
+                                            String selectedNominalVoucher = selectedVoucher.getNominalVoucher();
+                                            int selectedHargaVoucher = selectedVoucher.getHargaVoucher();
+                                            
+                                            // milih metode topUp
+                                            String leftAlignFormat = "| %-3s | %-17s |%n";
+                                            System.out.format("+-----+-------------------+%n");
+                                            System.out.format("| No  | Jenis Pembayaran  |%n");
+                                            System.out.format("+-----+-------------------+%n");
+                                            for(int i = 0; i < metodePembayaran.length; i++) {
+                                                System.out.format(
+                                                    leftAlignFormat, 
+                                                    i+1,
+                                                    metodePembayaran[i]
+                                                );
+                                            }
+                                            System.out.format("+-----+-------------------+%n");
+                                            System.out.print("Pilih metode pembayaran anda : ");
+                                            String nomor = myObj.nextLine();
+                                            String metode = metodePembayaran[Integer.parseInt(nomor)-1];
+    
+                                            // input id game user
+                                            System.out.print("\nMasukkan id game anda : ");
+                                            String userIdGame = myObj.nextLine();
+                                            
+                                            final UUID uuid = UUID.randomUUID();
+                                            final String id = "transaksi-" + uuid.toString();
+                                            
+                                            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+                                            
+                                            clear_screen();
+                                            Transaction.addTransaction(id, selectedIdVoucher, credentialId, selectedGameName, userIdGame, metode, timeStamp, selectedNominalVoucher, selectedHargaVoucher);
+                                            System.out.println("\nBERHASIL MELAKUKAN TOPUP");
+                                            continueInput();
                                         
-                                        // milih jumlah topup                                        
-                                        Voucher.getVouchersByIdGame(dataVouchers, selectedGame);
-                                        System.out.print("Pilih nominal TopUp : ");
-                                        String voucher = myObj.nextLine();
-                                        Voucher selectedVoucher = dataVouchers.get(Integer.parseInt(voucher)-1);
-                                        String selectedIdVoucher = dataVouchers.get(Integer.parseInt(voucher)-1).getId();
-                                        String selectedNominalVoucher = selectedVoucher.getNominalVoucher();
-                                        int selectedHargaVoucher = selectedVoucher.getHargaVoucher();
-                                        
-                                        // milih metode topUp
-                                        for(int i = 0; i < metodePembayaran.length; i++) {
-                                            System.out.println((i+1) + ". " + metodePembayaran[i]);
+                                        } catch(NumberFormatException e) {
+                                            System.out.println("\nInput tidak dapat berupa huruf.");
+                                            continueInput();
+                                        } catch(IndexOutOfBoundsException e) {
+                                            System.out.println("\nPilihan anda tidak tersedia.");
+                                            continueInput();
                                         }
-                                        System.out.print("Pilih metode pembayaran anda : ");
-                                        String nomor = myObj.nextLine();
-                                        String metode = metodePembayaran[Integer.parseInt(nomor)-1];
-
-                                        // input id game user
-                                        System.out.print("Masukkan id game anda : ");
-                                        String userIdGame = myObj.nextLine();
-                                        
-                                        final UUID uuid = UUID.randomUUID();
-                                        final String id = "transaksi-" + uuid.toString();
-                                        
-                                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-                                        
-                                        Transaction.addTransaction(id, selectedIdVoucher, credentialId, selectedGameName, userIdGame, metode, timeStamp, selectedNominalVoucher, selectedHargaVoucher);
                                         break;
                                     }
                                     // Update akun (username, password, nama, alamat, notelp)
