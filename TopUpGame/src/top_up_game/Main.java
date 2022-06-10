@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.InputMismatchException;
 import java.util.UUID;
 
 public class Main {
@@ -293,7 +294,7 @@ public class Main {
         String result;
         String credentialId;
         String idGame;
-        String nominalVoucher;
+        String nominalVoucher, tempHargaVoucher;
         int hargaVoucher;
         
         String[] metodePembayaran = {"gopay","OVO","DANA","ATM","Wallet", "Link Aja","Alfamart","Indomaret"};
@@ -365,63 +366,121 @@ public class Main {
                                                 }
                                                 case "2" -> {
                                                     // add game
-                                                    System.out.print("Nama: ");
-                                                    nama = myObj.nextLine();
-                                                    System.out.print("Deskripsi: ");
-                                                    deskripsi = myObj.nextLine();
-    
-                                                    final UUID uuid = UUID.randomUUID();
-                                                    final String id = "game-" + uuid.toString();
-                                                    
-                                                    System.out.println(Game.addGame(id, nama, deskripsi));
-                                                    nama = null;
-                                                    deskripsi = null;
+                                                    while(true) {
+                                                        while (true){
+                                                            System.out.print("Nama: ");
+                                                            nama = myObj.nextLine();
+                                                            if (nama.equals("")) {
+                                                                System.out.println("Input tidak boleh kosong");
+                                                                continue;
+                                                            }
+                                                            break;
+                                                        }
+
+                                                        while (true){
+                                                            System.out.print("Deskripsi: ");
+                                                            deskripsi = myObj.nextLine();
+                                                            if (deskripsi.equals("")) {
+                                                                System.out.println("Input tidak boleh kosong");
+                                                                continue;
+                                                            }
+                                                            break;
+                                                        }
+
+                                                        final UUID uuid = UUID.randomUUID();
+                                                        final String id = "game-" + uuid.toString();
+
+                                                        System.out.println(Game.addGame(id, nama, deskripsi));
+                                                        nama = null;
+                                                        deskripsi = null;
+                                                        break;
+                                                    }
                                                     break;
                                                 }
                                                 case "3" -> {
-                                                    // update game
-                                                    Game.getGames(dataGames);
-                                                    System.out.println("Pilih No. game yang ingin diubah.");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil4 = myObj.nextLine();
+                                                    while(true) {
+                                                        try{
+                                                            // update game
+                                                            Game.getGames(dataGames);
+                                                            System.out.println("Pilih No. game yang ingin diubah.");
+                                                            System.out.print("Masukkan Pilihan: ");
+                                                            pil4 = myObj.nextLine();
 
-                                                    Game selectedGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId());
-                                                    System.out.println("\n\n=== Data Game yang anda pilih ===");
-                                                    System.out.println("ID        : " + selectedGame.getId());
-                                                    System.out.println("Nama      : " + selectedGame.getNama());
-                                                    System.out.println("Deskripsi : " + selectedGame.getDeskripsi());
+                                                            Game selectedGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId());
+                                                            System.out.println("\n\n=== Data Game yang anda pilih ===");
+                                                            System.out.println("ID        : " + selectedGame.getId());
+                                                            System.out.println("Nama      : " + selectedGame.getNama());
+                                                            System.out.println("Deskripsi : " + selectedGame.getDeskripsi());
 
-                                                    System.out.println("\n\n=== Masukkan Data Baru Game ===");
-                                                    System.out.print("Nama: ");
-                                                    nama = myObj.nextLine();
-                                                    System.out.print("Deskripsi: ");
-                                                    deskripsi = myObj.nextLine();
+                                                            System.out.println("\n\n=== Masukkan Data Baru Game ===");
+                                                            
+                                                            while (true){
+                                                                System.out.print("Nama: ");
+                                                                nama = myObj.nextLine();
+                                                                if (nama.equals("")) {
+                                                                    System.out.println("Input tidak boleh kosong");
+                                                                    continue;
+                                                                }
+                                                                break;
+                                                            }
+                                                            
+                                                            while (true){
+                                                                System.out.print("Deskripsi: ");
+                                                                deskripsi = myObj.nextLine();
+                                                                if (deskripsi.equals("")) {
+                                                                    System.out.println("Input tidak boleh kosong");
+                                                                    continue;
+                                                                }
+                                                                break;
+                                                            }
+                                                            
 
-                                                    System.out.println(Game.updateGameById(selectedGame.getId(), nama, deskripsi));
-                                                    nama = null;
-                                                    deskripsi = null;
+                                                            System.out.println(Game.updateGameById(selectedGame.getId(), nama, deskripsi));
+                                                            nama = null;
+                                                            deskripsi = null;
+                                                            break;
+                                                        } catch (IndexOutOfBoundsException e) {
+                                                            System.out.println("Game tidak ada, masukkan input dengan benar.");
+                                                            continue;
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Input harus berupa Integer.");
+                                                            continue;
+                                                        }
+                                                    }
                                                     break;
                                                 }
                                                 case "4" -> {
                                                     // delete game
                                                     Game.getGames(dataGames);
                                                     System.out.println("Pilih No. game yang ingin dihapus.");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil4 = myObj.nextLine();
+                                                    while(true) {
+                                                        try {
+                                                            System.out.print("Masukkan Pilihan: ");
+                                                            pil4 = myObj.nextLine();
 
-                                                    Game selectedGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId());
-                                                    System.out.println("\n\n=== Data Game yang anda pilih ===");
-                                                    System.out.println("ID        : " + selectedGame.getId());
-                                                    System.out.println("Nama      : " + selectedGame.getNama());
-                                                    System.out.println("Deskripsi : " + selectedGame.getDeskripsi());
+                                                            Game selectedGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId());
+                                                            System.out.println("\n\n=== Data Game yang anda pilih ===");
+                                                            System.out.println("ID        : " + selectedGame.getId());
+                                                            System.out.println("Nama      : " + selectedGame.getNama());
+                                                            System.out.println("Deskripsi : " + selectedGame.getDeskripsi());
 
-                                                    System.out.println("Apakah anda yakin ingin menghapus user ini ? (Y/N)");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil5 = myObj.nextLine();
-                                                    if (pil5.equals("Y") || pil5.equals("y")) {
-                                                        System.out.println(Game.deleteGameById(selectedGame.getId()));
-                                                    } else {
-                                                        continue;
+                                                            while(true) {
+                                                                System.out.println("Apakah anda yakin ingin menghapus game ini ? (Y/N)");
+                                                                System.out.print("Masukkan Pilihan: ");
+                                                                pil5 = myObj.nextLine();
+                                                                if (pil5.equals("Y") || pil5.equals("y")) {
+                                                                    System.out.println(Game.deleteGameById(selectedGame.getId()));
+                                                                }
+                                                                break;
+                                                            }
+                                                            break;
+                                                        } catch (IndexOutOfBoundsException e) {
+                                                            System.out.println("Game tidak ada, masukkan input dengan benar.");
+                                                            continue;
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Input harus berupa Integer.");
+                                                            continue;
+                                                        }
                                                     }
                                                 }
                                                 case "0" -> {
@@ -526,26 +585,39 @@ public class Main {
                                                     // delete user
                                                     getUsers(dataCustomer);
                                                     System.out.println("Pilih No. User yang mau dihapus.");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil4 = myObj.nextLine();
-                                                    
-                                                    Customer selectedUser = getUserById(dataCustomer.get(Integer.parseInt(pil4)-1).getId());
-                                                    System.out.println("\n\n=== Data User yang anda pilih ===");
-                                                    System.out.println("ID          : " + selectedUser.getId());
-                                                    System.out.println("Username    : " + selectedUser.getUsername());
-                                                    System.out.println("Password    : " + selectedUser.getPassword());
-                                                    System.out.println("Nama        : " + selectedUser.getNama());
-                                                    System.out.println("Alamat      : " + selectedUser.getAlamat());
-                                                    System.out.println("NoTelp      : " + selectedUser.getNoTelp());
-                                                    
-                                                    System.out.println("Apakah anda yakin ingin menghapus user ini ? (Y/N)");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil5 = myObj.nextLine();
-                                                    if (pil5.toLowerCase().equals("y")){
-                                                        System.out.println(deleteUserById(selectedUser.getId()));
-                                                    } else {
-                                                        continue;
+                                                    while(true) {
+                                                        try {
+                                                            System.out.print("Masukkan Pilihan: ");
+                                                            pil4 = myObj.nextLine();
+
+                                                            Customer selectedUser = getUserById(dataCustomer.get(Integer.parseInt(pil4)-1).getId());
+                                                            System.out.println("\n\n=== Data User yang anda pilih ===");
+                                                            System.out.println("ID          : " + selectedUser.getId());
+                                                            System.out.println("Username    : " + selectedUser.getUsername());
+                                                            System.out.println("Password    : " + selectedUser.getPassword());
+                                                            System.out.println("Nama        : " + selectedUser.getNama());
+                                                            System.out.println("Alamat      : " + selectedUser.getAlamat());
+                                                            System.out.println("NoTelp      : " + selectedUser.getNoTelp());
+
+                                                            while(true) {
+                                                                System.out.println("Apakah anda yakin ingin menghapus user ini ? (Y/N)");
+                                                                System.out.print("Masukkan Pilihan: ");
+                                                                pil5 = myObj.nextLine();
+                                                                if (pil5.toLowerCase().equals("y")){
+                                                                    System.out.println(deleteUserById(selectedUser.getId()));
+                                                                }
+                                                                break;
+                                                            }
+                                                            break;
+                                                        } catch (IndexOutOfBoundsException e) {
+                                                            System.out.println("User tidak ada, masukkan input dengan benar.");
+                                                            continue;
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Input harus berupa Integer.");
+                                                            continue;
+                                                        }
                                                     }
+                                                    break;
                                                 }
                                                 case "0" -> {
                                                     repeat3 = false;
@@ -559,7 +631,8 @@ public class Main {
                                         }
                                         break;
                                     }
-                                    case "3" -> { // Pengelolaan Data Voucher
+                                    case "3" -> {
+                                        // Pengelolaan Data Voucher
                                         boolean repeat3 = true;
                                         while(repeat3) {
                                             clear_screen();
@@ -573,16 +646,50 @@ public class Main {
                                                     continueInput();
                                                 }
                                                 case "2" -> {
-                                                    // add vouchers
-                                                    System.out.print("ID Game : ");
-                                                    idGame = myObj.nextLine();
-                                                    System.out.print("Nominal : ");
-                                                    nominalVoucher = myObj.nextLine();
-                                                    System.out.print("Harga   : ");
-                                                    hargaVoucher = myObj.nextInt(); myObj.nextLine();
+                                                    while(true) {
+                                                        // add vouchers
+                                                        Game.getGames(dataGames);
+                                                        System.out.println("Pilih No. game");
+                                                        System.out.print("Masukkan Pilihan: ");
+                                                        pil4 = myObj.nextLine();
+
+                                                        idGame = Game.getGameById(dataGames.get(Integer.parseInt(pil4)-1).getId()).getId();
+                                                        
+                                                        
+                                                        while (true){
+                                                            System.out.print("Nominal : ");
+                                                            nominalVoucher = myObj.nextLine();
+
+                                                            if (nominalVoucher.equals("")) {
+                                                                System.out.println("Input tidak boleh kosong");
+                                                                continue;
+                                                            }
+                                                            break;
+                                                        }                                                            
+                                                        
+                                                        while(true) {
+                                                            try { 
+                                                                while (true){
+                                                                    System.out.print("Harga  : ");
+                                                                    tempHargaVoucher = myObj.nextLine();
+                                                                    if (tempHargaVoucher.equals("")) {
+                                                                        System.out.println("Input tidak boleh kosong");
+                                                                        continue;
+                                                                    }
+                                                                    hargaVoucher = Integer.parseInt(tempHargaVoucher);
+                                                                    break;
+                                                                }                                                            
+                                                            } catch (NumberFormatException e) {
+                                                                System.out.println("Input harus berupa Integer.");
+                                                                continue;
+                                                            }
+                                                            break;
+                                                        }
+                                                        break;
+                                                    }
     
                                                     final UUID uuid = UUID.randomUUID();
-                                                    final String id = "game-" + uuid.toString();
+                                                    final String id = "voucher-" + uuid.toString();
                                                     
                                                     System.out.println(Voucher.addVoucher(id, idGame, nominalVoucher, hargaVoucher)); 
                                                     idGame = null;
@@ -591,55 +698,101 @@ public class Main {
                                                     break;
                                                 }
                                                 case "3" -> {
-                                                    // update voucher
-                                                    Voucher.getVouchers(dataVouchers);
-                                                    System.out.println("Pilih No. Voucher yang mau diubah.");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil4 = myObj.nextLine();
-                                                    
-                                                    Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId());
-                                                    System.out.println("\n\n=== Data Voucher yang anda pilih ===");
-                                                    System.out.println("ID          : " + selectedVoucher.getId());
-                                                    System.out.println("ID Game     : " + selectedVoucher.getIdGame());
-                                                    System.out.println("Nominal     : " + selectedVoucher.getNominalVoucher());
-                                                    System.out.println("Harga       : " + selectedVoucher.getHargaVoucher());
-                                                    
-                                                    System.out.println("\n\n=== Silahkan Masukkan Data Baru Voucher ===");
-                                                    System.out.print("ID Game: ");
-                                                    idGame = myObj.nextLine();
-                                                    System.out.print("Nominal: ");
-                                                    nominalVoucher = myObj.nextLine();
-                                                    System.out.print("Harga  : ");
-                                                    hargaVoucher = myObj.nextInt();
-                                                    myObj.nextLine();
-                                                    
-                                                    System.out.println(Voucher.updateVoucherById(selectedVoucher.getId(), idGame, nominalVoucher, hargaVoucher)); // ini klo gk pke Voucher. jg bsa tapi import updateVoucherById nya
-                                                    
-                                                    pil4 = null; idGame = null; nominalVoucher = null; hargaVoucher = 0;
+                                                    while(true) {
+                                                        try {
+                                                            // update voucher
+                                                            Voucher.getVouchers(dataVouchers);
+                                                            System.out.println("Pilih No. Voucher yang mau diubah.");
+                                                            System.out.print("Masukkan Pilihan: ");
+                                                            pil4 = myObj.nextLine();
+
+                                                            Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId());
+                                                            System.out.println("\n\n=== Data Voucher yang anda pilih ===");
+                                                            System.out.println("ID          : " + selectedVoucher.getId());
+                                                            System.out.println("ID Game     : " + selectedVoucher.getIdGame());
+                                                            System.out.println("Nominal     : " + selectedVoucher.getNominalVoucher());
+                                                            System.out.println("Harga       : " + selectedVoucher.getHargaVoucher());
+
+                                                            System.out.println("\n\n=== Silahkan Masukkan Data Baru Voucher ===");                                                            
+                                                            while (true){
+                                                                System.out.print("Nominal : ");
+                                                                nominalVoucher = myObj.nextLine();
+
+                                                                if (nominalVoucher.equals("")) {
+                                                                    System.out.println("Input tidak boleh kosong");
+                                                                    continue;
+                                                                }
+                                                                break;
+                                                            }         
+                                                            while(true) {
+                                                                try { 
+                                                                    while (true){
+                                                                        System.out.print("Harga  : ");
+                                                                        tempHargaVoucher = myObj.nextLine();
+                                                                        if (tempHargaVoucher.equals("")) {
+                                                                            System.out.println("Input tidak boleh kosong");
+                                                                            continue;
+                                                                        }
+                                                                        hargaVoucher = Integer.parseInt(tempHargaVoucher);
+                                                                        break;
+                                                                    }                                                            
+                                                                } catch (NumberFormatException e) {
+                                                                    System.out.println("Input harus berupa Integer.");
+                                                                    continue;
+                                                                }
+                                                                break;
+                                                            }
+
+                                                            System.out.println(Voucher.updateVoucherById(selectedVoucher.getId(), nominalVoucher, hargaVoucher)); // ini klo gk pke Voucher. jg bsa tapi import updateVoucherById nya
+                                                            pil4 = null; idGame = null; nominalVoucher = null; hargaVoucher = 0;
+                                                            break;
+                                                        } catch (IndexOutOfBoundsException e) {
+                                                            System.out.println("Voucher tidak ada, masukkan input dengan benar.");
+                                                            continue;
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Input harus berupa Integer.");
+                                                            continue;
+                                                        }
+                                                    }
                                                     break;
                                                 }
                                                 case "4" -> {
-                                                    // delete voucher
-                                                    Voucher.getVouchers(dataVouchers);
-                                                    System.out.println("Pilih No. Voucher yang mau dihapus.");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil4 = myObj.nextLine();
-                                                    
-                                                    Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId()); // ini klo gk pke Voucher. jg bsa tapi import getVoucherById nya
-                                                    System.out.println("\n\n=== Data Voucher yang anda pilih ===");
-                                                    System.out.println("ID          : " + selectedVoucher.getId());
-                                                    System.out.println("ID Game     : " + selectedVoucher.getIdGame());
-                                                    System.out.println("Nominal     : " + selectedVoucher.getNominalVoucher());
-                                                    System.out.println("Harga       : " + selectedVoucher.getHargaVoucher());
-                                                    
-                                                    System.out.println("Apakah anda yakin ingin menghapus voucher ini ? (Y/N)");
-                                                    System.out.print("Masukkan Pilihan: ");
-                                                    pil5 = myObj.nextLine();
-                                                    if (pil5.toLowerCase().equals("y")){
-                                                        System.out.println(Voucher.deleteVoucherById(selectedVoucher.getId())); // ini klo gk pke Voucher. jg bsa tapi import deleteVoucherById nya
-                                                    } else {
-                                                        continue;
+                                                    while(true) {
+                                                        try {
+                                                            // delete voucher
+                                                            Voucher.getVouchers(dataVouchers);
+                                                            System.out.println("Pilih No. Voucher yang mau dihapus.");
+                                                            System.out.print("Masukkan Pilihan: ");
+                                                            pil4 = myObj.nextLine();
+
+                                                            Voucher selectedVoucher = Voucher.getVoucherById(dataVouchers.get(Integer.parseInt(pil4)-1).getId()); // ini klo gk pke Voucher. jg bsa tapi import getVoucherById nya
+                                                            System.out.println("\n\n=== Data Voucher yang anda pilih ===");
+                                                            System.out.println("ID          : " + selectedVoucher.getId());
+                                                            System.out.println("ID Game     : " + selectedVoucher.getIdGame());
+                                                            System.out.println("Nominal     : " + selectedVoucher.getNominalVoucher());
+                                                            System.out.println("Harga       : " + selectedVoucher.getHargaVoucher());
+
+                                                            while(true) {
+                                                                System.out.println("Apakah anda yakin ingin menghapus voucher ini ? (Y/N)");
+                                                                System.out.print("Masukkan Pilihan: ");
+                                                                pil5 = myObj.nextLine();
+                                                                if (pil5.toLowerCase().equals("y")){
+                                                                    System.out.println(Voucher.deleteVoucherById(selectedVoucher.getId())); // ini klo gk pke Voucher. jg bsa tapi import deleteVoucherById nya
+                                                                } else if (pil5.toLowerCase().equals("n")){
+                                                                    System.out.println("Voucher Gagal Dihapus."); // ini klo gk pke Voucher. jg bsa tapi import deleteVoucherById nya
+                                                                }
+                                                                break;
+                                                            }
+                                                            break;
+                                                        } catch (IndexOutOfBoundsException e) {
+                                                            System.out.println("Voucher tidak ada, masukkan input dengan benar.");
+                                                            continue;
+                                                        } catch (NumberFormatException e) {
+                                                            System.out.println("Input harus berupa Integer.");
+                                                            continue;
+                                                        }
                                                     }
+                                                    break;
                                                 }
                                                 case "0" -> {
                                                     repeat3 = false;

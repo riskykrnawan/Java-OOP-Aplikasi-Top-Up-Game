@@ -191,11 +191,10 @@ class Voucher {
         }
     }
     
-    static String updateVoucherById(String id, String idGame, String nominalVoucher, int hargaVoucher) {
+    static String updateVoucherById(String id, String nominalVoucher, int hargaVoucher) {
         try {
             String query = "UPDATE vouchers SET "
-                    + "idGame='" + idGame + "', "
-                    + "nominalVoucher='" + nominalVoucher + "' "
+                    + "nominalVoucher='" + nominalVoucher + "', "
                     + "hargaVoucher='" + hargaVoucher + "' "
                     + "WHERE id='" + id + "'";
             int result = update(query);
