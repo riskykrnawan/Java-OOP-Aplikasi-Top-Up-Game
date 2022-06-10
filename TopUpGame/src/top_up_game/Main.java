@@ -206,7 +206,7 @@ public class Main {
     
     static String getOneUser(String username, String password) {
         try {
-            String query = "SELECT id FROM users WHERE username='" + username + "'";
+            String query = "SELECT id FROM users WHERE username='" + username + "'" + " && password='" + password + "'" ;
             ResultSet resultSet = query(query);
             while (resultSet.next()) {
                 String resultId = resultSet.getString(1);
